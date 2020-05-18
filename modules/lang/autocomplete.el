@@ -9,5 +9,6 @@
   (company-minimum-prefix-length 1))
 
 (use-package company-box
+  :if (feature-p! +childframe)
   :hook (company-mode . company-box-mode))
 ;;; autocompletion.el ends here

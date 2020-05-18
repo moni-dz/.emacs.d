@@ -23,6 +23,6 @@
            (,(all-the-icons-octicon "tools" :height 1.0 :v-adjust 0.0)
             "Config"
             "Find file in .emacs.d"
-            (lambda (&rest _) (counsel-find-file f2k-dir)))
+            (lambda (&rest _) (find-file f2k-dir)))
 	         ))))
 ;;; icons.el ends here

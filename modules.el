@@ -14,7 +14,8 @@
        discordrp
        :ui
        icons
-       (search-ivy +swiper)
+       ;; (search-ivy +swiper)
+       search-selectrum
        discoverability
        tabs
        hl-todo
