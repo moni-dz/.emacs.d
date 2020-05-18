@@ -1,0 +1,6 @@
+;;; workspaces.el --- workspaces for Emacs -*- lexical-binding: t; -*-
+;;; Commentary:
+;; Named perspectives with `persp-mode'
+;;; Code:
+
+;;; workspaces.el ends here
