@@ -6,3 +6,6 @@ auto-save-list
 transient
 .lsp-session-v1
 projectile.cache
+cache
+var
+etc

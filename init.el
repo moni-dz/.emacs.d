@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;; We define where everything goes and load the core.
 ;;; Code:
+(setq-default use-dialog-box nil)
+(tooltip-mode -1) ;; no u tooltip
 
 (defvar f2k-dir user-emacs-directory)
 (defvar f2k-core-dir (expand-file-name "core" f2k-dir))

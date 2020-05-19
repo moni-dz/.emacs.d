@@ -1,8 +1,9 @@
-;;; core-packages.el --- Initializes the package manager powered by straight.el -*- lexical-binding; t; -*-
+;;; core-packages.el --- Initializes the package manager powered by straight.el -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;; Package management powered by `use-package' and `straight'
 ;;; Code:
-(setq straight-repository-branch "develop"
+(setq package-enable-at-startup nil
+      straight-repository-branch "develop"
       straight-use-package-by-default t)
 
 (defvar bootstrap-version)
@@ -19,6 +20,8 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
+
+(use-package no-littering :init (require 'no-literring))
 
 (provide 'core-packages)
 ;;; core-packages.el ends here
