@@ -29,5 +29,6 @@
        :tools
        gcmh
        magit
+       vterm
        esup)
 ;;; modules.el ends here

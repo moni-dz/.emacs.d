@@ -68,7 +68,8 @@
   (doom-modeline-bar-width 3)
   (doom-modeline-major-mode-icon t)
   (doom-modeline-major-mode-color-icon t)
-  (doom-modeline-indent-info t))
+  (doom-modeline-indent-info t)
+  :config (display-battery-mode +1))
 
 (use-package hide-mode-line
   :hook ((comint-mode help-mode) . hide-mode-line-mode))
@@ -77,7 +78,8 @@
   (add-hook 'prog-mode-hook #'hl-line-mode))
 
 (use-package display-line-numbers
-  :hook (prog-mode . display-line-numbers-mode)
+  :hook ((prog-mode . display-line-numbers-mode)
+         (org-mode . display-line-numbers-mode))
   :custom
   (display-line-numbers-type 'relative)
   (display-line-numbers-current-absolute t)

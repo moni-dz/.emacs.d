@@ -18,7 +18,8 @@
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6
       preferred-gc-threshold 16777216
-      file-name-handler-alist nil)
+      file-name-handler-alist nil
+      inhibit-compacting-font-caches t)
 ;; and then reset it to 16MiB after with the file-name-handler-alist
 (add-hook 'emacs-startup-hook (lambda ()
 	                              (setq gc-cons-threshold preferred-gc-threshold
