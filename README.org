@@ -4,5 +4,7 @@
 
 yeah i know the init time is slow af
 
+(p.s. i suck at elisp :^) hehe)
+
 credit where it's due:
 + https://github.com/Lgneous/emacs.d (thanks now i dont have to write a ginormous monolith)

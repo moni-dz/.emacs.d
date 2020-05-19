@@ -10,3 +10,4 @@ var
 etc
 private.el
 flycheck_*.el
+*.el#

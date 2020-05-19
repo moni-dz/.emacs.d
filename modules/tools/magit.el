@@ -2,5 +2,5 @@
 ;;; Commentary:
 ;; some cool git porcelain
 ;;; Code:
-(use-package magit :defer 2)
+(use-package magit :bind ("C-x g" . magit))
 ;;; magit.el ends here

@@ -12,6 +12,7 @@
        :misc
        path ;; inherit shell envronment
        elcord ;; flex your editor to discord
+       wakatime ;; track our stats boys
        :ui
        unicode ;; unicode support
        ligatures ;; pretty font ligatures
@@ -34,5 +35,6 @@
        magit ;; git porcelain
        vterm ;; terminal emulator
        esup ;; start-up profiler
+       explain-pause ;; another profiler
        ) 
 ;;; modules.el ends here

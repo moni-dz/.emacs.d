@@ -5,6 +5,7 @@
 (use-package vterm
   :demand t
   :commands vterm vterm-mode
+  :bind ("C-c t" . vterm)
   :preface (setq vterm-install t)
   :hook (vterm-mode . hide-mode-line-mode)
   :custom (vterm-kill-buffer-on-exit t))
