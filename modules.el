@@ -14,8 +14,8 @@
        discordrp
        :ui
        icons
-       ;; (search-ivy +swiper)
-       search-selectrum
+       (search-ivy +swiper)
+       ;; search-selectrum ;; neat alternative to ivy
        discoverability
        tabs
        hl-todo

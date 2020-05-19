@@ -15,7 +15,11 @@
   (projectile-sort-order 'access-time)
   (projectile-enable-caching t)
   (projectile-require-project-root t)
-  (projectile-completion-system 'ivy)
-  :config (projectile-mode t))
+  :config
+  (cond ((module-p! :ui search-ivy)
+         (setq projectile-completion-system 'ivy))
+        ((module-p! :ui search-selectrum)
+         (setq projectile-completion-system 'selectrum)))
+  (projectile-mode t))
 ;;; project.el ends here
 

@@ -3,21 +3,9 @@
 ;; Ivy is lighter than helm
 ;;; Code:
 (use-package ivy
-  :demand t
-  :bind ([remap switch-to-buffer] . ivy-switch-buffer)
-  (:map ivy-minibuffer-map
-        ("RET" . ivy-alt-done)
-        ("C-RET" . ivy-done))
-  :custom
-  (ivy-use-virtual-buffers t)
-  (ivy-count-format "%d/%d ")
-  (ivy-height 20)
-  (ivy-display-style 'fancy)
-  (ivy-wrap t)
-  (ivy-action-wrap t)
-  (ivy-re-builders-alist
-   '((t . ivy--regex-plus)))
-  :config (ivy-mode +1))
+  :init (ivy-mode +1)
+  :custom (ivy-use-virtual-buffers t)
+  :config (setq enable-recursive-minibuffers t))
 
 (use-package counsel
   :after ivy
