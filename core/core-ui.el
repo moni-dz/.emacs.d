@@ -2,18 +2,6 @@
 ;;; Commentary:
 ;; We define all the pretty stuff here
 ;;; Code:
-(set-face-attribute 'default nil
-		                :family "JetBrains Mono"
-		                :height 90
-		                :weight 'bold
-		                :width 'normal)
-
-(set-face-attribute 'variable-pitch nil
-                    :family "Recursive Sans Casual Static"
-                    :height 120
-                    :weight 'normal
-                    :width 'normal)
-
 (use-package dashboard
   :hook (after-init . dashboard-setup-startup-hook)
   :custom
@@ -29,37 +17,6 @@
 
 (line-number-mode t)
 (column-number-mode t)
-
-(defun f2k/enable-ligatures ()
-  "Define JetBrains Mono ligatures and load them with harfbuzz."
-  (let ((alist '((?! . "\\(?:!\\(?:==\\|[!=]\\)\\)")
-                 (?# . "\\(?:#\\(?:###?\\|_(\\|[!#(:=?[_{]\\)\\)")
-                 (?$ . "\\(?:\\$>\\)")
-                 (?& . "\\(?:&&&?\\)")
-                 (?* . "\\(?:\\*\\(?:\\*\\*\\|[/>]\\)\\)")
-                 (?+ . "\\(?:\\+\\(?:\\+\\+\\|[+>]\\)\\)")
-                 (?- . "\\(?:-\\(?:-[>-]\\|<<\\|>>\\|[<>|~-]\\)\\)")
-                 (?. . "\\(?:\\.\\(?:\\.[.<]\\|[.=?-]\\)\\)")
-                 (?/ . "\\(?:/\\(?:\\*\\*\\|//\\|==\\|[*/=>]\\)\\)")
-                 (?: . "\\(?::\\(?:::\\|\\?>\\|[:<-?]\\)\\)")
-                 (?\; . "\\(?:;;\\)")
-                 (?< . "\\(?:<\\(?:!--\\|\\$>\\|\\*>\\|\\+>\\|-[<>|]\\|/>\\|<[<=-]\\|=\\(?:=>\\|[<=>|]\\)\\||\\(?:||::=\\|[>|]\\)\\|~[>~]\\|[$*+/:<=>|~-]\\)\\)")
-                 (?= . "\\(?:=\\(?:!=\\|/=\\|:=\\|=[=>]\\|>>\\|[=>]\\)\\)")
-                 (?> . "\\(?:>\\(?:=>\\|>[=>-]\\|[]:=-]\\)\\)")
-                 (?? . "\\(?:\\?[.:=?]\\)")
-                 (?\[ . "\\(?:\\[\\(?:||]\\|[<|]\\)\\)")
-                 (?\ . "\\(?:\\\\/?\\)")
-                 (?\] . "\\(?:]#\\)")
-                 (?^ . "\\(?:\\^=\\)")
-                 (?_ . "\\(?:_\\(?:|?_\\)\\)")
-                 (?{ . "\\(?:{|\\)")
-                 (?| . "\\(?:|\\(?:->\\|=>\\||\\(?:|>\\|[=>-]\\)\\|[]=>|}-]\\)\\)")
-                 (?~ . "\\(?:~\\(?:~>\\|[=>@~-]\\)\\)"))))
-    (dolist (char-regexp alist)
-      (set-char-table-range composition-function-table (car char-regexp)
-                            `([,(cdr char-regexp) 0 compose-gstring-for-graphic])))))
-
-(add-hook 'after-init-hook #'f2k/enable-ligatures)
 
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)

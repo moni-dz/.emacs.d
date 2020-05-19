@@ -1,10 +1,10 @@
-;;; early-init.el --- The earliest init file to load -*- lexical-binding: t; -*-
+;;; early-init.el --- The earliest init file to load -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Commentary:
 ;; We try to do optimizations as early as possible here
 ;;; Code:
 (setq-default load-prefer-newer t ;; Load newer byte-compiled files
               inhibit-compacting-font-caches nil ;; Don't compact font caches to help with `org-superstar' performance
-              bidi-display-reordering 'left-to-right ;; Disable RTL 
+              bidi-display-reordering 'left-to-right ;; Disable RTL
               cursor-in-non-selected-windows nil
               highlight-nonselected-windows nil
               create-lockfiles nil ;; just stop ur littering in my folders ffs

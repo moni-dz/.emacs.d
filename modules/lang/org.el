@@ -34,11 +34,10 @@ Inserted by installing `org-mode' or when a release is made."
 
 (provide 'org-version)
 (use-package org :straight org-plus-contrib)
-(use-package mixed-pitch :hook (org-mode . mixed-pitch-mode))
 (use-package org-superstar
-  :after org
+  :hook (org-mode . org-superstar-mode)
   :custom
-  (org-superstar-headline-bullets-list '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶"))
+  (org-superstar-headline-bullets-list '("⦿" "⦾" "✸" "✿" "✤" "✜" "◆" "▶"))
   (org-superstar-prettify-item-bullets t))
 (use-package toc-org :after org)
 ;;; org.el ends here

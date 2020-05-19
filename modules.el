@@ -13,7 +13,9 @@
        path ;; inherit shell envronment
        elcord ;; flex your editor to discord
        :ui
+       ligatures ;; pretty font ligatures
        icons ;; pretty font icons
+       writeroom ;; focus on your code
        (ivy +swiper    ;; the only good completion (except for selectrum but its too early)
             +prescient)
        discoverability ;; show available bindings for keypress

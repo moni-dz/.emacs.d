@@ -5,6 +5,8 @@
 (setq-default use-dialog-box nil)
 (tooltip-mode -1) ;; no u tooltip
 
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 (defvar f2k-dir user-emacs-directory)
 (defvar f2k-core-dir (expand-file-name "core" f2k-dir))
 (defvar f2k-modules-dir (expand-file-name  "modules" f2k-dir))
