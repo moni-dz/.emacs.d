@@ -21,7 +21,7 @@
 
 (straight-use-package 'use-package)
 
-(use-package no-littering :init (require 'no-literring))
+(use-package no-littering :init (require 'no-littering))
 
 (provide 'core-packages)
 ;;; core-packages.el ends here
