@@ -13,6 +13,7 @@
        path ;; inherit shell envronment
        elcord ;; flex your editor to discord
        :ui
+       unicode ;; unicode support
        ligatures ;; pretty font ligatures
        icons ;; pretty font icons
        writeroom ;; focus on your code

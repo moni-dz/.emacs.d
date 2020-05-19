@@ -37,7 +37,16 @@ Inserted by installing `org-mode' or when a release is made."
 (use-package org-superstar
   :hook (org-mode . org-superstar-mode)
   :custom
-  (org-superstar-headline-bullets-list '("⦿" "⦾" "✸" "✿" "✤" "✜" "◆" "▶"))
+  (org-superstar-headline-bullets-list '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶"))
   (org-superstar-prettify-item-bullets t))
-(use-package toc-org :after org)
+(use-package toc-org
+  :after org
+  :hook (org-mode . toc-org-mode))
+
+(custom-set-faces
+ '(org-level-1 ((t (:inherit outline-1 :height 1.7))))
+ '(org-level-2 ((t (:inherit outline-2 :height 1.4))))
+ '(org-level-3 ((t (:inherit outline-3 :height 1.2))))
+ '(org-level-4 ((t (:inherit outline-4 :height 1.1))))
+ '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
 ;;; org.el ends here

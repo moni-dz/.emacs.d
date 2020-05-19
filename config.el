@@ -10,18 +10,25 @@
 
 (add-hook 'after-save-hook #'f2k--tangle-config-on-save-h)
 
-(load (concat f2k-dir "private.el"))
+(defconst f2k-private-file (expand-file-name "private.el" f2k-dir))
+
+(progn
+  (unless (file-exists-p f2k-private-file)
+    (write-region "" nil f2k-private-file))
+
+  (if (file-exists-p f2k-private-file)
+      (load (concat f2k-dir "private.el"))))
 
 (set-face-attribute 'default nil
-		              :family "Cascadia Code"
-		              :height 110
-		              :weight 'bold
-		              :width 'normal)
+                    :family "JetBrains Mono"
+                    :height 90
+                    :weight 'bold
+                    :width 'normal)
 
 (set-face-attribute 'variable-pitch nil
-                  :family "Recursive Sans Casual Static"
-                  :height 90
-                  :weight 'normal
-                  :width 'normal)
+                    :family "Recursive Sans Casual Static"
+                    :height 90
+                    :weight 'normal
+                    :width 'normal)
 
 ;;; config.el ends here

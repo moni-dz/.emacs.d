@@ -28,8 +28,9 @@
   (doom-modeline-indent-info t)
   :config (display-battery-mode +1))
 
-(use-package hide-mode-line
-  :hook ((comint-mode help-mode) . hide-mode-line-mode))
+(use-package vi-tilde-fringe :hook (prog-mode . vi-tilde-fringe-mode))
+
+(use-package hide-mode-line :hook ((comint-mode help-mode) . hide-mode-line-mode))
 
 (when (display-graphic-p)
   (add-hook 'prog-mode-hook #'hl-line-mode))

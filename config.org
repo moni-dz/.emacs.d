@@ -3,6 +3,10 @@
 #+STARTUP: showeverything
 
 * Table of Contents :TOC_3:
+- [[#initialization][Initialization]]
+- [[#private][Private]]
+- [[#fonts][Fonts]]
+- [[#end-of-file][End of File]]
 
 * Initialization
   Tangle this org file on save.
@@ -22,22 +26,29 @@
 * Private
   Load =private.el=.
   #+begin_src elisp
-  (load (concat f2k-dir "private.el"))
+    (defconst f2k-private-file (expand-file-name "private.el" f2k-dir))
+
+    (progn
+      (unless (file-exists-p f2k-private-file)
+        (write-region "" nil f2k-private-file))
+
+      (if (file-exists-p f2k-private-file)
+          (load (concat f2k-dir "private.el"))))
   #+end_src
 * Fonts
   Set fonts.
   #+begin_src elisp
-  (set-face-attribute 'default nil
-		                :family "Cascadia Code"
-		                :height 110
-		                :weight 'bold
-		                :width 'normal)
+    (set-face-attribute 'default nil
+                        :family "JetBrains Mono"
+                        :height 90
+                        :weight 'bold
+                        :width 'normal)
 
-  (set-face-attribute 'variable-pitch nil
-                    :family "Recursive Sans Casual Static"
-                    :height 90
-                    :weight 'normal
-                    :width 'normal)
+    (set-face-attribute 'variable-pitch nil
+                        :family "Recursive Sans Casual Static"
+                        :height 90
+                        :weight 'normal
+                        :width 'normal)
   #+end_src
 * End of File
   #+begin_src elisp
