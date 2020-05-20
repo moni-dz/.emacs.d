@@ -2,23 +2,10 @@
 ;;; Commentary:
 ;; We try to do optimizations as early as possible here
 ;;; Code:
-(setq-default load-prefer-newer t ;; Load newer byte-compiled files
-              inhibit-compacting-font-caches nil ;; Don't compact font caches to help with `org-superstar' performance
-              bidi-display-reordering 'left-to-right ;; Disable RTL
-              cursor-in-non-selected-windows nil
-              highlight-nonselected-windows nil
-              create-lockfiles nil ;; just stop ur littering in my folders ffs
-              frame-inhibit-implied-resize t
-              ;; Set encoding to UTF-8
-              locale-coding-system 'utf-8)
+(setq-default load-prefer-newer t)
 
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-selection-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
-
-;; Set Emacs minimum version to 27
-(defconst f2k-required-version "27")
+;; Set Emacs minimum version to 28
+(defconst f2k-required-version "28")
 (when (version< emacs-version f2k-required-version)
   (error "Required Emacs version is %s, but current version is %s" f2k-required-version emacs-version))
 
@@ -37,15 +24,17 @@
 
 ;; Avoid any GC pauses at init.
 (setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 2.0
+      gc-cons-percentage 0.6
       preferred-gc-threshold 16777216
       file-name-handler-alist nil)
 
 ;; and then reset it to 16MiB after with the file-name-handler-alist
-(add-hook 'emacs-startup-hook (lambda ()
-	                              (setq gc-cons-threshold preferred-gc-threshold
-		                                  gc-cons-percentage 0.1)
-                                (dolist (handler f2k--file-name-handler-alist)
-                                  (add-to-list 'file-name-handler-alist handler))
-                                (makunbound 'f2k--file-handler-alist)))
+(run-with-idle-timer
+ 5 nil
+ (lambda ()
+	 (setq gc-cons-threshold preferred-gc-threshold
+		     gc-cons-percentage 0.1)
+   (dolist (handler f2k--file-name-handler-alist)
+     (add-to-list 'file-name-handler-alist handler))
+   (makunbound 'f2k--file-handler-alist)))
 ;;; early-init.el ends here

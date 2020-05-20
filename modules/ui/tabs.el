@@ -4,11 +4,10 @@
 ;;; Code:
 (setq x-underline-at-descent-line t)
 (use-package centaur-tabs
+  :hook (after-change-major-mode . centaur-tabs-mode)
   :custom
   (centaur-tabs-height 30)
   (centaur-tabs-set-icons t)
   (centaur-tabs-set-bar 'under)
-  (centaur-tabs-set-modified-marker t)
-  (centaur-tabs-change-fonts "Recursive Sans Casual Static" 90)
-  :config (centaur-tabs-mode +1))
+  (centaur-tabs-set-modified-marker t))
 ;;; tabs.el ends here

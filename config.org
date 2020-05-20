@@ -10,7 +10,7 @@
 
 * Initialization
   Tangle this org file on save.
-  #+begin_src elisp
+  #+begin_src elisp :tangle yes
     ;;; config.el --- User Configuration (think of this as userland) -*- lexical-binding: t; no-byte-compile: t; -*-
     ;;; Commentary:
     ;; User configuration tangled from an org file.
@@ -25,7 +25,7 @@
   #+end_src
 * Private
   Load =private.el=.
-  #+begin_src elisp
+  #+begin_src elisp :tangle yes
     (defconst f2k-private-file (expand-file-name "private.el" f2k-dir))
 
     (progn
@@ -37,7 +37,7 @@
   #+end_src
 * Fonts
   Set fonts.
-  #+begin_src elisp
+  #+begin_src elisp :tangle yes
     (set-face-attribute 'default nil
                         :family "JetBrains Mono"
                         :height 90
@@ -51,6 +51,6 @@
                         :width 'normal)
   #+end_src
 * End of File
-  #+begin_src elisp
+  #+begin_src elisp :tangle yes
   ;;; config.el ends here
   #+end_src

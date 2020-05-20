@@ -2,9 +2,13 @@
 ;;; Commentary:
 ;; We define where everything goes and load the core.
 ;;; Code:
+;; I have no use of the *scratch* buffer
+(kill-buffer "*scratch*")
+
 (setq-default use-dialog-box nil)
 (tooltip-mode -1) ;; no u tooltip
 
+(setq initial-major-mode 'fundamental-mode)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (defvar f2k-dir user-emacs-directory)

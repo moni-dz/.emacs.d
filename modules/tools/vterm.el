@@ -3,7 +3,6 @@
 ;; all the others suck ngl
 ;;; Code:
 (use-package vterm
-  :demand t
   :commands vterm vterm-mode
   :bind ("C-c t" . vterm)
   :preface (setq vterm-install t)

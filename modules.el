@@ -14,7 +14,6 @@
        elcord ;; flex your editor to discord
        wakatime ;; track our stats boys
        :ui
-       unicode ;; unicode support
        ligatures ;; pretty font ligatures
        icons ;; pretty font icons
        writeroom ;; focus on your code
@@ -30,8 +29,7 @@
        rust ;; rust support
        golang ;; go support
        org ;; literate
-       :tools
-       gcmh ;; gc management
+       :tools       
        magit ;; git porcelain
        vterm ;; terminal emulator
        esup ;; start-up profiler

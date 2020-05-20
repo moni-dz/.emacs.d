@@ -49,5 +49,14 @@
 ;; End file with \n
 (setq-default require-final-newline t)
 
+;; No lockfiles
+(setq create-lockfiles nil)
+
+(setq inhibit-compacting-font-caches nil) ;; Don't compact font caches to help with `org-superstar' performance
+(setq bidi-display-reordering nil)
+(setq cursor-in-non-selected-windows nil)
+(setq highlight-nonselected-windows nil)
+(setq frame-inhibit-implied-resize t)
+
 (provide 'core-basics)
 ;;; core-basics.el ends here

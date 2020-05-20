@@ -2,5 +2,5 @@
 ;;; Commentary:
 ;; which-key mode
 ;;; Code:
-(use-package which-key :config (which-key-mode t))
+(use-package which-key :hook (emacs-startup . which-key-mode))
 ;;; discoverability.el  ends here

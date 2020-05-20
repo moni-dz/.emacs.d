@@ -4,5 +4,5 @@
 ;;; Code:
 (use-package wakatime-mode
   :custom (wakatime-cli-path (executable-find "wakatime"))
-  :hook (emacs-startup . global-wakatime-mode))
+  :config (global-wakatime-mode 1))
 ;;; wakatime.el ends here

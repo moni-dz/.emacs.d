@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;; We define all the pretty stuff here
 ;;; Code:
+(use-package unicode-fonts :init (unicode-fonts-setup))
+
 (use-package dashboard
   :hook (after-init . dashboard-setup-startup-hook)
   :custom
@@ -25,8 +27,7 @@
   (doom-modeline-bar-width 3)
   (doom-modeline-major-mode-icon t)
   (doom-modeline-major-mode-color-icon t)
-  (doom-modeline-indent-info t)
-  :config (display-battery-mode +1))
+  (doom-modeline-indent-info t))
 
 (use-package vi-tilde-fringe :hook (prog-mode . vi-tilde-fringe-mode))
 
@@ -36,8 +37,9 @@
   (add-hook 'prog-mode-hook #'hl-line-mode))
 
 (use-package display-line-numbers
-  :hook ((prog-mode . display-line-numbers-mode)
-         (org-mode . display-line-numbers-mode))
+  :hook
+  ((prog-mode . display-line-numbers-mode)
+   (org-mode . display-line-numbers-mode))
   :custom
   (display-line-numbers-type 'relative)
   (display-line-numbers-current-absolute t)

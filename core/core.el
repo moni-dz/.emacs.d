@@ -4,6 +4,7 @@
 ;;; Code:
 (defvar f2k--core-modules
   '(core-packages
+    core-performance
     core-custom
     core-lib
     core-basics
