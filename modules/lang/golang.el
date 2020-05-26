@@ -3,6 +3,7 @@
 ;; Go's a tricky one
 ;;; Code:
 (use-package go-mode
+  :if (executable-find "gopls")
   :hook ((go-mode . (lambda ()
                       (add-hook 'before-save-hook #'lsp-format-buffer t t)
                       (add-hook 'before-save-hook #'lsp-organize-imports t t)
