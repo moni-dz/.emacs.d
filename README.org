@@ -1,10 +1,5 @@
-#+TITLE: the boy's shoddy AF Emacs config
+#+TITLE: emacs
 #+AUTHOR: fortuneteller2k
 #+STARTUP: showeverything
 
-yeah i know the init time is slow af
-
-(p.s. i suck at elisp :^) hehe)
-
-credit where it's due:
-+ https://github.com/Lgneous/emacs.d (thanks now i dont have to write a ginormous monolith)
+fortuneteller2k's personal emacs config
