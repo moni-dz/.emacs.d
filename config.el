@@ -20,13 +20,13 @@
       (load (concat f2k-dir "private.el"))))
 
 (set-face-attribute 'default nil
-                    :family "JetBrains Mono"
+                    :family "FantasqueSansMono Nerd Font"
                     :height 90
                     :weight 'bold
                     :width 'normal)
 
 (set-face-attribute 'variable-pitch nil
-                    :family "Recursive Sans Casual Static"
+                    :family "Inter"
                     :height 90
                     :weight 'normal
                     :width 'normal)

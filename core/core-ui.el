@@ -12,7 +12,7 @@
   (dashboard-set-init-info nil)
   (dashboard-center-content t)
   (dashboard-show-shortcuts nil)
-  (dashboard-items '((recents . 5) (projects . 5)))
+  (dashboard-items '((recents . 5)))
   (dashboard-set-init-info nil)
   (dashboard-set-navigator t)
   (dashboard-set-footer nil))

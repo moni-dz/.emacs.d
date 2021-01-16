@@ -2,17 +2,16 @@
 ;;; Commentary:
 ;; This is where the user defines what features to enable
 ;;; Code:
-(load! :theme monokai-pro ;; the good monokai
+(load! :theme
+       horizon
        :editor
        (parens +rainbow) ;; () [] {} autoclose
        aggressive-indent ;; aggressive indentation
        hungry-delete ;; hungry delete
-       projectile ;; project management
        evil ;; vim bindings
        :misc
        path ;; inherit shell envronment
        elcord ;; flex your editor to discord
-       wakatime ;; track our stats boys
        :ui
        ligatures ;; pretty font ligatures
        icons ;; pretty font icons
@@ -29,10 +28,7 @@
        rust ;; rust support
        golang ;; go support
        org ;; literate
-       :tools       
+       :tools
        magit ;; git porcelain
-       vterm ;; terminal emulator
-       esup ;; start-up profiler
-       explain-pause ;; another profiler
        ) 
 ;;; modules.el ends here
