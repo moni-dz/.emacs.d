@@ -28,7 +28,9 @@
        rust ;; rust support
        golang ;; go support
        org ;; literate
+       nix ;; Nix/NixOS configuration
        :tools
+       deft
        magit ;; git porcelain
        ) 
 ;;; modules.el ends here

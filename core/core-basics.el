@@ -3,6 +3,8 @@
 ;; Contains basic configuration
 ;;; Code:
 
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
 (when (display-graphic-p)
   (menu-bar-mode 0)
   (toggle-scroll-bar 0)

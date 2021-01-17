@@ -21,13 +21,13 @@
 
 (set-face-attribute 'default nil
                     :family "FantasqueSansMono Nerd Font"
-                    :height 90
-                    :weight 'bold
+                    :height 105
+                    :weight 'normal
                     :width 'normal)
 
 (set-face-attribute 'variable-pitch nil
                     :family "Inter"
-                    :height 90
+                    :height 105
                     :weight 'normal
                     :width 'normal)
 
