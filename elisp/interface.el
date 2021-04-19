@@ -20,10 +20,22 @@
   :custom
   (ivy-use-virtual-buffers t))
 
+(use-package ivy-rich
+  :after ivy
+  :init
+  (ivy-rich-mode +1))
+
+(use-package ivy-posframe
+  :after ivy
+  :init
+  (ivy-posframe-mode +1)
+  :custom
+  (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-bottom-left))))
+
 (use-package counsel
   :after ivy
   :init
-  (counsel-mode 1))
+  (counsel-mode +1))
 
 (use-package swiper
   :after ivy

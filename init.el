@@ -15,6 +15,7 @@
 (require 'interface)
 (require 'multimedia)
 (require 'programming)
+(require 'tools)
 (require 'vanity)
 
 ;;; init.el ends here
