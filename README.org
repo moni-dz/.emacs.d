@@ -1,5 +1,0 @@
-#+TITLE: emacs
-#+AUTHOR: fortuneteller2k
-#+STARTUP: showeverything
-
-fortuneteller2k's personal emacs config

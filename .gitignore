@@ -11,3 +11,5 @@ etc
 private.el
 flycheck_*.el
 *.el#
+eln-cache
+etc

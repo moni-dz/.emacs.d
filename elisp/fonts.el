@@ -1,9 +1,16 @@
-;;; ligatures.el --- Font Ligatures & Emacs = <3 -*- lexical-binding: t; -*-
-;;; Commentary:
-;; collection of generic ligatures set with `regexp-opt' for harfbuzz to load
-;; Emacs 28+ only
-;;; Code:
-(defun f2k/enable-ligatures ()
+(set-face-attribute 'default nil
+                    :family "monospace"
+                    :height 105
+                    :weight 'light
+                    :width 'normal)
+
+(set-face-attribute 'variable-pitch nil
+                    :family "sans-serif"
+                    :height 105
+                    :weight 'light
+                    :width 'normal)
+
+(defun enable-ligatures ()
   "Define general ligatures and load them with HarfBuzz."
   (let ((alist  '((?!  . "\\(?:!\\(?:==\\|[!=]\\)\\)")                                      ; (regexp-opt '("!!" "!=" "!=="))
                   (?#  . "\\(?:#\\(?:###?\\|_(\\|[#(:=?[_{]\\)\\)")                         ; (regexp-opt '("##" "###" "####" "#(" "#:" "#=" "#?" "#[" "#_" "#_(" "#{"))
@@ -35,7 +42,8 @@
                   (?~  . "\\(?:~\\(?:~>\\|[=>@~-]\\)\\)"))))                                  ; (regexp-opt '("~-" "~=" "~>" "~@" "~~" "~~>"))
     (dolist (char-regexp alist)
       (set-char-table-range composition-function-table (car char-regexp)
-                            `([,(cdr char-regexp) 0 compose-gstring-for-graphic])))))
+                            `([,(cdr char-regexp) 0 font-shape-gstring])))))
 
-(add-hook 'after-change-major-mode-hook #'f2k/enable-ligatures)
-;;; ligatures.el ends here
+(add-hook 'after-change-major-mode-hook #'enable-ligatures)
+
+(provide 'fonts)

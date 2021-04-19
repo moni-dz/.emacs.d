@@ -1,26 +1,20 @@
-;;; init.el --- The latest init file to load -*- lexical-binding: t; -*-
+;;; init.el --- The land of the (require 'x) -*- lexical-binding: t; -*-
 ;;; Commentary:
-;; We define where everything goes and load the core.
+;;; `optimization' - Emacs tweaks for startup and overall responsiveness
+;;; `editor' - Anything concerning files, input mechanisms, etc...
+;;; `fonts' - Fonts, and font ligatures
+;;; `interface' - General look and feel of Emacs
+;;; `multimedia' - EMMS (Emacs Multi Media Server)
+;;; `programming' - Flycheck, Company, LSP, and language-specific configuration
+;;; `vanity' - other miscellaneous stuff, like Discord RP
 ;;; Code:
-;; I have no use of the *scratch* buffer
-(kill-buffer "*scratch*")
 
-(setq-default use-dialog-box nil)
-(tooltip-mode -1) ;; no u tooltip
+(require 'optimization)
+(require 'editor)
+(require 'fonts)
+(require 'interface)
+(require 'multimedia)
+(require 'programming)
+(require 'vanity)
 
-(setq initial-major-mode 'fundamental-mode)
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-(defvar f2k-dir user-emacs-directory)
-(defvar f2k-core-dir (expand-file-name "core" f2k-dir))
-(defvar f2k-modules-dir (expand-file-name  "modules" f2k-dir))
-
-(add-to-list 'load-path f2k-core-dir)
-
-(setq custom-file (if (memq system-type '(gnu/linux darwin)) "/dev/null" "NUL"))
-
-(require 'core)
-
-(load (expand-file-name "modules" f2k-dir))
-(load (expand-file-name "config" f2k-dir))
 ;;; init.el ends here
