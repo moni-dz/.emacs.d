@@ -72,8 +72,8 @@
 (use-package dashboard
   :preface
   (defun dashboard-init-info-with-gcs ()
-    """Set a dashboard banner including information on package initialization
-  time and garbage collections."""
+    "Set a dashboard banner including information on package initialization
+  time and garbage collections."
     (setq dashboard-init-info
           (format "Ready in %.5f seconds with %d garbage collections."
                   (float-time (time-subtract after-init-time before-init-time)) gcs-done)))
