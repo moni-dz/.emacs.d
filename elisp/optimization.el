@@ -12,7 +12,8 @@
 
 ;; and then reset it to 16MiB after with the file-name-handler-alist
 (run-with-idle-timer
- 5 nil
+ 5
+ nil
  (lambda ()
 	 (setq gc-cons-threshold preferred-gc-threshold
 		     gc-cons-percentage 0.1)
@@ -20,10 +21,11 @@
      (add-to-list 'file-name-handler-alist handler))
    (makunbound 'f2k--file-handler-alist)))
 
-
+;; Fundamental Mode is the simplest mode
 (setq initial-major-mode 'fundamental-mode)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;; Escape key cancels anything
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 (setq create-lockfiles nil
@@ -42,7 +44,7 @@
   (gcmh-idle-delay 6)
   (gcmh-high-cons-threshold 16777216))
 
-;; Stop warning me about things that I shouldn't fix
-(setq warning-minimum-level :emergency)
+;; Show only errors, not warnings
+(setq warning-minimum-level :error)
 
 (provide 'optimization)

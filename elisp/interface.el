@@ -17,44 +17,13 @@
       initial-scratch-message nil
       enable-recursive-minibuffers t)
 
-(use-package ivy
-  :hook
-  (after-init . ivy-mode)
-  :custom
-  (ivy-use-virtual-buffers t))
-
-(use-package ivy-rich
-  :after ivy
+(use-package selectrum
   :init
-  (ivy-rich-mode +1))
-
-(use-package ivy-posframe
-  :after ivy
-  :init
-  (ivy-posframe-mode +1)
-  :custom
-  (ivy-posframe-display-functions-alist
-   '((t . ivy-posframe-display-at-frame-top-center))))
-
-(use-package counsel
-  :after ivy
-  :init
-  (counsel-mode +1))
-
-(use-package swiper
-  :after ivy
-  :bind
-  ("C-s" . swiper))
+  (selectrum-mode +1))
 
 (use-package doom-themes
   :init
-  (load-theme 'base16-flowtune t)
-  :custom
-  (base16-distinct-fringe-background nil))
-
-(use-package doom-themes
-  :init
-  (load-theme 'doom-old-hope t)
+  (load-theme 'doom-horizon t)
   :config
   (doom-themes-visual-bell-config)
   (doom-themes-org-config)

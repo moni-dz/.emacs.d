@@ -1,11 +1,11 @@
 (set-face-attribute 'default nil
-                    :family "monospace"
+                    :family "Iosevka FT"
                     :height 105
                     :weight 'light
                     :width 'normal)
 
 (set-face-attribute 'variable-pitch nil
-                    :family "sans-serif"
+                    :family "Sarasa Gothic J"
                     :height 105
                     :weight 'light
                     :width 'normal)
