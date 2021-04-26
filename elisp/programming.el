@@ -50,5 +50,6 @@
   :commands lsp-ivy-workspace-symbol)
 
 (require 'nix-lang)
+(require 'org-lang)
 
 (provide 'programming)

@@ -1,7 +1,10 @@
 (tooltip-mode -1)
+
+(push '(internal-border-width . 15) default-frame-alist)
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
+
 (when (featurep 'ns)
   (push '(ns-transparent-titlebar . t) default-frame-alist))
 
@@ -30,7 +33,8 @@
   :init
   (ivy-posframe-mode +1)
   :custom
-  (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-bottom-left))))
+  (ivy-posframe-display-functions-alist
+   '((t . ivy-posframe-display-at-frame-top-center))))
 
 (use-package counsel
   :after ivy
@@ -42,13 +46,21 @@
   :bind
   ("C-s" . swiper))
 
-(use-package base16-theme
+(use-package doom-themes
   :init
-  (add-to-list 'custom-theme-load-path (concat user-emacs-directory "elisp/themes"))
-  :config
   (load-theme 'base16-flowtune t)
   :custom
   (base16-distinct-fringe-background nil))
+
+(use-package doom-themes
+  :init
+  (load-theme 'doom-old-hope t)
+  :config
+  (doom-themes-visual-bell-config)
+  (doom-themes-org-config)
+  :custom
+  (doom-themes-enable-bold t)
+  (doom-themes-enable-italic t))
 
 (use-package centaur-tabs
   :hook
@@ -104,9 +116,10 @@
   (dashboard-center-content t)
   (dashboard-footer-icon "")
   (dashboard-footer-messages '("When I say a thing, you know it's true. So I'm calling it right here and now. This one's in the bag!"))
-  (dashboard-items '((recents . 20)))
+  (dashboard-items '((recents . 10)))
   (dashboard-show-shortcuts nil)
-  :hook ((emacs-startup . dashboard-refresh-buffer)
-         (dashboard-mode . dashboard-init-info-with-gcs)))
+  :hook
+  ((emacs-startup . dashboard-refresh-buffer)
+   (dashboard-mode . dashboard-init-info-with-gcs)))
 
 (provide 'interface)

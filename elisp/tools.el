@@ -1,3 +1,4 @@
-(use-package magit)
+(use-package magit
+  :commands magit)
 
 (provide 'tools)

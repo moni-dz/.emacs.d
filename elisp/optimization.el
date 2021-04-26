@@ -42,4 +42,7 @@
   (gcmh-idle-delay 6)
   (gcmh-high-cons-threshold 16777216))
 
+;; Stop warning me about things that I shouldn't fix
+(setq warning-minimum-level :emergency)
+
 (provide 'optimization)
