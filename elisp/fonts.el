@@ -1,14 +1,20 @@
-(set-face-attribute 'default nil
+(set-face-attribute 'default
+                    nil
                     :family "Iosevka FT"
                     :height 105
-                    :weight 'light
-                    :width 'normal)
+                    :weight 'light)
 
-(set-face-attribute 'variable-pitch nil
-                    :family "Sarasa Gothic J"
-                    :height 105
-                    :weight 'light
-                    :width 'normal)
+(set-face-attribute 'fixed-pitch
+                    nil
+                    :family "Iosevka FT")
+
+(set-face-attribute 'fixed-pitch-serif
+                    nil
+                    :family "Sarasa Gothic J")
+
+(set-face-attribute 'variable-pitch
+                    nil
+                    :family "Sarasa Gothic J")
 
 (defun enable-ligatures ()
   "Define general ligatures and load them with HarfBuzz."
