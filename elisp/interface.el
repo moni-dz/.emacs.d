@@ -33,8 +33,7 @@
 
 (use-package centaur-tabs
   :hook
-  ((dashboard-mode . centaur-tabs-local-mode)
-   (writeroom-mode . centaur-tabs-local-mode))
+  (dashboard-mode . centaur-tabs-local-mode)
   :config
   (setq x-underline-at-descent-line t)
   (centaur-tabs-mode +1)
@@ -53,7 +52,9 @@
 (use-package writeroom-mode
   :hook
   ((writeroom-mode-enable . (lambda () (display-line-numbers-mode -1)))
-   (writeroom-mode-disable . (lambda () (display-line-numbers-mode +1)))))
+   (writeroom-mode-disable . (lambda () (display-line-numbers-mode +1))))
+  :custom
+  (writeroom-width 120))
 
 (use-package display-line-numbers
   :hook
