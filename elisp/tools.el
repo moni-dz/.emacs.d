@@ -5,7 +5,7 @@
 (use-package keycast
   :config
   (define-minor-mode keycast-mode
-    "Show current command and its key binding in the mode line."
+    "Show current command and its keybinding in the modeline."
     :global t
     (if keycast-mode
         (add-hook 'pre-command-hook 'keycast--update t)
