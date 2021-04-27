@@ -1,4 +1,5 @@
 (require 'subr-x)
+
 (use-package git)
 
 (defun org-git-version ()
@@ -39,11 +40,18 @@ Inserted by installing `org-mode' or when a release is made."
   (org-hide-macro-markers t))
 
 (custom-set-faces
- '(org-level-1 ((t (:inherit outline-1 :height 1.8))))
- '(org-level-2 ((t (:inherit outline-2 :height 1.6))))
+ '(org-document-title ((t (:inherit outline-1 :height 3.0))))
+ '(org-document-info ((t (:inherit outline-3 :height 1.5))))
+ '(org-level-1 ((t (:inherit outline-1 :height 2.0))))
+ '(org-level-2 ((t (:inherit outline-2 :height 1.8))))
  '(org-level-3 ((t (:inherit outline-3 :height 1.4))))
  '(org-level-4 ((t (:inherit outline-4 :height 1.2))))
  '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^ *\\([\*]\\) "
+    (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
 (use-package mixed-pitch
   :hook
@@ -53,5 +61,19 @@ Inserted by installing `org-mode' or when a release is made."
   :after org
   :hook
   (org-mode . toc-org-mode))
+
+(defun org-mode-remove-stars ()
+  (font-lock-add-keywords
+   nil
+   '(("^\\*+ "
+      (0
+       (prog1 nil
+         (put-text-property
+          (match-beginning 0) (match-end 0)
+          'invisible t)))))))
+
+(add-hook 'org-mode-hook #'org-mode-remove-stars)
+(add-hook 'org-mode-hook #'visual-line-mode)
+(add-hook 'org-mode-hook #'org-indent-mode)
 
 (provide 'org-lang)
