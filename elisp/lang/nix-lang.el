@@ -1,4 +1,6 @@
 (use-package nix-mode
-  :mode "\\.nix\\'")
+  :mode "\\.nix\\'"
+  :hook
+  (nix-mode . eglot-ensure))
 
 (provide 'nix-lang)
