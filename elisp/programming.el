@@ -1,6 +1,6 @@
 (use-package flycheck
   :hook
-  ((prog-mode . (lambda () (flycheck-mode +1)))
+  ((prog-mode . flycheck-mode)
    ;; Emacs Lisp syntax checking has a bunch of false positives, best to disable it
    (emacs-lisp-mode . (lambda () (flycheck-mode -1)))))
 
@@ -8,7 +8,7 @@
   :hook
   (prog-mode . company-mode)
   :custom
-  (company-idle-delay 0.5)
+  (company-idle-delay 0.2)
   (company-tooltip-limit 14)
   (company-tooltip-align-annotatons t)
   (company-minimum-prefix-length 1)
@@ -18,33 +18,12 @@
   (company-dabbrev-ignore-case nil)
   (company-dabbrev-downcase nil))
 
-(use-package lsp-mode
+(use-package eglot
   :hook
-  (lsp-mode . lsp-enable-which-key-integration)
-  :custom
-  (lsp-auto-configure t)
-  (lsp-enable-yasnippet nil)
-  (lsp-diagnostic-package :flycheck)
-  :commands lsp)
-
-(use-package lsp-ui
-  :after lsp
-  :hook
-  (lsp . lsp-ui-mode)
-  :commands lsp-ui-mode
-  :custom
-  (lsp-ui-sideline-show-code-actions t)
-  (lsp-ui-sideline-delay 0.3)
-  (lsp-ui-sideline-actions-icon nil)
-  (lsp-ui-doc-enable)
-  (lsp-ui-doc-position 'top))
-
-(use-package lsp-ivy
-  :after lsp
-  :defer t
-  :commands lsp-ivy-workspace-symbol)
+  (eglot--managed-mode . (lambda () (flymake-mode -1))))
 
 (require 'nix-lang)
 (require 'org-lang)
+(require 'rust-lang)
 
 (provide 'programming)
