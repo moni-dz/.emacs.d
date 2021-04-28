@@ -49,17 +49,25 @@
   (doom-modeline-icon nil)
   (doom-modeline-indent-info t))
 
-(use-package writeroom-mode
-  :hook
-  ((writeroom-mode-enable . (lambda () (display-line-numbers-mode -1)))
-   (writeroom-mode-disable . (lambda () (display-line-numbers-mode +1))))
+(use-package olivetti
   :custom
-  (writeroom-width 120))
+  (olivetti-body-width 120))
+
+(defun interface/toggle-zen-mode ()
+  "Toggle a distraction-free environment for writing."
+  (interactive)
+  (cond ((bound-and-true-p olivetti-mode)
+         (olivetti-mode -1)
+         (centaur-tabs-local-mode -1)
+         (display-line-numbers-mode +1))
+        (t
+         (olivetti-mode +1)
+         (centaur-tabs-local-mode +1)
+         (display-line-numbers-mode -1))))
 
 (use-package display-line-numbers
   :hook
-  ((prog-mode . display-line-numbers-mode)
-   (org-mode . display-line-numbers-mode))
+  ((prog-mode org-mode) . display-line-numbers-mode)
   :custom
   (display-line-numbers-width 3)
   (display-line-numbers-widen t))
