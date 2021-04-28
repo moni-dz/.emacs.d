@@ -33,6 +33,10 @@ Inserted by installing `org-mode' or when a release is made."
 (use-package org
   :straight
   org-plus-contrib
+  :hook
+  ((org-mode . org-mode-remove-stars)
+   (org-mode . visual-line-mode)
+   (org-mode . org-indent-mode))
   :custom
   (org-hide-emphasis-markers t)
   (org-hide-block-startup t)
@@ -71,9 +75,5 @@ Inserted by installing `org-mode' or when a release is made."
          (put-text-property
           (match-beginning 0) (match-end 0)
           'invisible t)))))))
-
-(add-hook 'org-mode-hook #'org-mode-remove-stars)
-(add-hook 'org-mode-hook #'visual-line-mode)
-(add-hook 'org-mode-hook #'org-indent-mode)
 
 (provide 'org-lang)
