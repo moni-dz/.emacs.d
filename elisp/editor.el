@@ -13,17 +13,11 @@
 	            indent-tabs-mode nil
               tab-width 2)
 
-(use-package aggressive-indent
+(use-package smartparens
+  :init
+  (require 'smartparens-config)
   :hook
-  (prog-mode . aggressive-indent-mode))
-
-(use-package hungry-delete
-  :hook
-  (prog-mode . global-hungry-delete-mode))
-
-(use-package dumbparens
-  :hook
-  (prog-mode . dumbparens-mode))
+  (prog-mode . smartparens-mode))
 
 (show-paren-mode t)
 
