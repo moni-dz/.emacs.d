@@ -27,5 +27,6 @@
 (require 'nix-lang)
 (require 'org-lang)
 (require 'rust-lang)
+(require 'elisp-lang)
 
 (provide 'programming)
