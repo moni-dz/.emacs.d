@@ -17,15 +17,13 @@
       file-name-handler-alist nil)
 
 ;; and then reset it to 16MiB after with the file-name-handler-alist
-(run-with-idle-timer
- 5
- nil
- (lambda ()
-	 (setq gc-cons-threshold preferred-gc-threshold
-		     gc-cons-percentage 0.1)
-   (dolist (handler f2k--file-name-handler-alist)
-     (add-to-list 'file-name-handler-alist handler))
-   (makunbound 'f2k--file-handler-alist)))
+(add-hook 'emacs-startup-hook
+          (lambda ()
+	          (setq gc-cons-threshold preferred-gc-threshold
+		              gc-cons-percentage 0.1)
+            (dolist (handler f2k--file-name-handler-alist)
+              (add-to-list 'file-name-handler-alist handler))
+            (makunbound 'f2k--file-handler-alist)))
 
 ;; Fundamental Mode is the simplest mode
 (setq initial-major-mode 'fundamental-mode)
