@@ -10,7 +10,10 @@
 
 (setq buffer-file-coding-system 'utf-8
       save-buffer-coding-system 'utf-8
-      auto-save-default nil)
+      auto-save-default nil
+      scroll-step 1
+      scroll-conservatively 10000
+      auto-window-vscroll nil)
 
 (setq-default require-final-newline t
 	            indent-tabs-mode nil
