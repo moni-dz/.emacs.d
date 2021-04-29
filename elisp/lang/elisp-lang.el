@@ -1,5 +1,14 @@
 ;;; -*- lexical-binding: t -*-
 
+;; ELisp/d looks d for disgusting
+(add-hook
+ 'emacs-lisp-mode-hook
+ (lambda () (setq mode-name "Emacs Lisp")))
+
+(use-package highlight-defined
+  :hook
+  (emacs-lisp-mode . highlight-defined-mode))
+
 (use-package aggressive-indent
   :hook
   (emacs-lisp-mode . aggressive-indent-mode))
