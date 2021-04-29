@@ -7,14 +7,21 @@
 (set-terminal-coding-system 'utf-8)
 
 (setq buffer-file-coding-system 'utf-8
-      save-buffer-coding-system 'utf-8)
+      save-buffer-coding-system 'utf-8
+      auto-save-default nil)
 
 (setq-default require-final-newline t
 	            indent-tabs-mode nil
               tab-width 2)
 
+(use-package super-save
+  :config
+  (super-save-mode +1)
+  :custom
+  (super-save-auto-save-when-idle t))
+
 (use-package smartparens
-  :init
+  :config
   (require 'smartparens-config)
   :hook
   (prog-mode . smartparens-mode))
