@@ -1,13 +1,29 @@
 ;;; early-init.el --- Package management -*- lexical-binding: t; -*-
 ;;; Commentary:
-;;; We use `straight.el' for package management
+;;; We use `straight.el' for package management, and early frame modifications
 ;;; Code:
 
-(setq package-enable-at-startup nil
+(tooltip-mode -1)
+
+(push '(internal-border-width . 10) default-frame-alist)
+(push '(menu-bar-lines . 0) default-frame-alist)
+(push '(tool-bar-lines . 0) default-frame-alist)
+(push '(vertical-scroll-bars) default-frame-alist)
+
+(when (featurep 'ns)
+  (push '(ns-transparent-titlebar . t) default-frame-alist))
+
+(setq ring-bell-function 'ignore
+      visible-bell nil
+      uniquify-buffer-name-style 'post-forward-angle-brackets
+      inhibit-startup-screen t
+      inhibit-startup-message t
+      inhibit-startup-echo-area-message t
+      initial-scratch-message nil
+      package-enable-at-startup nil
       straight-cache-autoloads t
       straight-check-for-modifications '(check-on-save find-when-checking)
       straight-repository-branch "develop"
-      straight-use-package-by-default t
       use-package-always-ensure nil)
 
 (defvar bootstrap-version)
@@ -35,7 +51,9 @@
                 (not (y-or-n-p (format "Delete repository %S?" repo))))
       (delete-directory (straight--repos-dir repo) 'recursive 'trash))))
 
-(use-package no-littering :init (require 'no-littering))
+(use-package no-littering
+  :config
+  (require 'no-littering))
 
 (add-to-list 'load-path (concat user-emacs-directory "elisp"))
 (add-to-list 'load-path (concat user-emacs-directory "elisp/lang"))
