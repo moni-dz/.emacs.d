@@ -26,10 +26,10 @@
   (solaire-global-mode +1))
 
 (use-package doom-themes
-  :demand t
+  :hook
+  (emacs-startup . (lambda () (load-theme 'doom-horizon t)))
   :after solaire-mode
   :config
-  (load-theme 'doom-horizon t)
   (doom-themes-visual-bell-config)
   (doom-themes-org-config)
   :custom
@@ -84,6 +84,7 @@
   :hook
   (emacs-startup . which-key-mode))
 
+;; NOTE: we demand this since `dashboard' needs it
 (use-package page-break-lines
   :demand t)
 
@@ -95,8 +96,8 @@
     "Set a dashboard banner including information on package initialization
   time and garbage collections."
     (setq dashboard-init-info
-          (format "Ready in %.4f seconds with %d garbage collections."
-                  (float-time (time-subtract after-init-time before-init-time)) gcs-done)))
+          (format "Ready in %s with %d garbage collections."
+                  (emacs-init-time) gcs-done)))
   :config
   (dashboard-setup-startup-hook)
   :custom

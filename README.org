@@ -10,7 +10,7 @@ opinionated set of emacs lisp files
  * [[https://github.com/joaotavora/eglot][eglot]] instead of [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] for the LSP client
  * embrace variable pitch for titles and headings
  * no font icons where deemed unnecessary
- * defer *everything* if possible, some exceptions were made, (=evil=, =dashboard=, and others)
+ * defer *everything* if possible, some exceptions were made, (=dashboard=, =no-littering=, and others)
 
 ** Screenshots
 
