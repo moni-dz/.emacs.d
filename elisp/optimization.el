@@ -1,3 +1,7 @@
+;; native compilation
+(setq comp-speed 3
+      comp-async-report-warnings-errors nil)
+
 ;; Temporarily save the file-name-handler-alist
 (defvar f2k--file-name-handler-alist file-name-handler-alist)
 
@@ -37,8 +41,10 @@
 
 ;; Use the Garbage Collector Magic Hack
 (use-package gcmh
-  :init (gcmh-mode +1)
-  :hook (focus-out . gcmh-idle-garbage-collect)
+  :config
+  (gcmh-mode +1)
+  :hook
+  (focus-out . gcmh-idle-garbage-collect)
   :custom
   (gcmh-verbose nil)
   (gcmh-idle-delay 6)
