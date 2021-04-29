@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
-;; ELisp/d looks d for disgusting
+;; ELisp/l looks odd
 (add-hook
  'emacs-lisp-mode-hook
  (lambda () (setq mode-name "Emacs Lisp")))

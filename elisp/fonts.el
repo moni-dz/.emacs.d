@@ -1,24 +1,22 @@
 ;;; -*- lexical-binding: t -*-
 
-(set-face-attribute 'default
-                    nil
-                    :family "Iosevka FT"
-                    :height 105
-                    :weight 'light)
+(defun fonts/set-fonts ()
+  (set-face-attribute 'default
+                      nil
+                      :family "Iosevka FT"
+                      :height 105
+                      :weight 'light)
+  (set-face-attribute 'fixed-pitch
+                      nil
+                      :family "Iosevka FT")
+  (set-face-attribute 'fixed-pitch-serif
+                      nil
+                      :family "Sarasa Gothic J")
+  (set-face-attribute 'variable-pitch
+                      nil
+                      :family "Sarasa Gothic J"))
 
-(set-face-attribute 'fixed-pitch
-                    nil
-                    :family "Iosevka FT")
-
-(set-face-attribute 'fixed-pitch-serif
-                    nil
-                    :family "Sarasa Gothic J")
-
-(set-face-attribute 'variable-pitch
-                    nil
-                    :family "Sarasa Gothic J")
-
-(defun enable-ligatures ()
+(defun fonts/enable-ligatures ()
   "Define general ligatures and load them with HarfBuzz."
   (let ((alist  '((?!  . "\\(?:!\\(?:==\\|[!=]\\)\\)")                                      ; (regexp-opt '("!!" "!=" "!=="))
                   (?#  . "\\(?:#\\(?:###?\\|_(\\|[#(:=?[_{]\\)\\)")                         ; (regexp-opt '("##" "###" "####" "#(" "#:" "#=" "#?" "#[" "#_" "#_(" "#{"))
@@ -52,6 +50,7 @@
       (set-char-table-range composition-function-table (car char-regexp)
                             `([,(cdr char-regexp) 0 font-shape-gstring])))))
 
-(add-hook 'after-change-major-mode-hook #'enable-ligatures)
+(add-hook 'emacs-startup-hook #'fonts/set-fonts)
+(add-hook 'after-change-major-mode-hook #'fonts/enable-ligatures)
 
 (provide 'fonts)

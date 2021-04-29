@@ -95,7 +95,7 @@
     "Set a dashboard banner including information on package initialization
   time and garbage collections."
     (setq dashboard-init-info
-          (format "Ready in %.1f seconds with %d garbage collections."
+          (format "Ready in %.4f seconds with %d garbage collections."
                   (float-time (time-subtract after-init-time before-init-time)) gcs-done)))
   :config
   (dashboard-setup-startup-hook)

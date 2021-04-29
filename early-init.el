@@ -52,6 +52,7 @@
       (delete-directory (straight--repos-dir repo) 'recursive 'trash))))
 
 (use-package no-littering
+  :demand t
   :config
   (require 'no-littering))
 
