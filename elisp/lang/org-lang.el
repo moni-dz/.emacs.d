@@ -1,8 +1,9 @@
 ;;; -*- lexical-binding: t -*-
 
 (use-package org
+  :defer 1
   :straight
-  org-plus-contrib
+  '(org-plus-contrib :includes org)
   :hook
   ((org-mode . org-mode-remove-stars)
    (org-mode . visual-line-mode)
