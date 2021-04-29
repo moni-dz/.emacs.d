@@ -4,8 +4,8 @@
 ;;; `editor' - Anything concerning files, input mechanisms, etc...
 ;;; `fonts' - Fonts, and font ligatures
 ;;; `interface' - General look and feel of Emacs
-;;; `multimedia' - EMMS (Emacs Multi Media Server)
 ;;; `programming' - Flycheck, Company, LSP, and language-specific configuration
+;;; `tools' - Applications that run inside Emacs
 ;;; `vanity' - other miscellaneous stuff, like Discord RP
 ;;; Code:
 
@@ -13,7 +13,6 @@
 (require 'editor)
 (require 'fonts)
 (require 'interface)
-(require 'multimedia)
 (require 'programming)
 (require 'tools)
 (require 'vanity)
