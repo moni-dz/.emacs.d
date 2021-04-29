@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (use-package selectrum
   :config
   (selectrum-mode +1))
@@ -20,6 +22,17 @@
   :custom
   (doom-themes-enable-bold t)
   (doom-themes-enable-italic t))
+
+(use-package solaire-mode
+  :hook
+  ((change-major-mode . turn-on-solaire-mode)
+  (after-revert . turn-on-solaire-mode)
+  (ediff-prepare-buffer . solaire-mode)
+  (minibuffer-setup . solaire-mode-in-minibuffer))
+  :custom
+  (solaire-mode-auto-swap-bg nil)
+  :config
+  (solaire-global-mode +1))
 
 (use-package centaur-tabs
   :hook
@@ -78,7 +91,7 @@
     "Set a dashboard banner including information on package initialization
   time and garbage collections."
     (setq dashboard-init-info
-          (format "Ready in %.5f seconds with %d garbage collections."
+          (format "Ready in %.1f seconds with %d garbage collections."
                   (float-time (time-subtract after-init-time before-init-time)) gcs-done)))
   :config
   (dashboard-setup-startup-hook)
