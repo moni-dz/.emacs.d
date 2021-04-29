@@ -19,8 +19,8 @@
 (global-auto-revert-mode +1)
 
 (use-package super-save
-  :config
-  (super-save-mode +1)
+  :hook
+  (emacs-startup . (lambda () (super-save-mode +1)))
   :custom
   (super-save-auto-save-when-idle t))
 
@@ -57,11 +57,11 @@
   (highlight-indent-guides-method 'character))
 
 (use-package evil
-  :config
-  (evil-mode +1))
+  :hook
+  (emacs-startup . (lambda () (evil-mode +1))))
 
 (use-package ctrlf
-  :config
-  (ctrlf-mode +1))
+  :hook
+  (emacs-startup . (lambda () (ctrlf-mode +1))))
 
 (provide 'editor)

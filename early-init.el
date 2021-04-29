@@ -22,8 +22,7 @@
       package-enable-at-startup nil
       straight-cache-autoloads t
       straight-check-for-modifications '(check-on-save find-when-checking)
-      straight-repository-branch "develop"
-      use-package-always-ensure nil)
+      straight-repository-branch "develop")
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -40,7 +39,9 @@
 
 (straight-use-package 'use-package)
 
-(setq straight-use-package-by-default t)
+(setq straight-use-package-by-default t
+      use-package-always-ensure nil
+      use-package-always-defer t)
 
 (defun straight-x-clean-unused-repos ()
   "Clean module repos that are unused."

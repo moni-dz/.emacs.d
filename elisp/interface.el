@@ -1,8 +1,8 @@
 ;;; -*- lexical-binding: t -*-
 
 (use-package selectrum
-  :config
-  (selectrum-mode +1))
+  :hook
+  (emacs-startup . (lambda () (selectrum-mode +1))))
 
 (use-package helpful
   :bind
@@ -26,6 +26,7 @@
   (solaire-global-mode +1))
 
 (use-package doom-themes
+  :demand t
   :after solaire-mode
   :config
   (load-theme 'doom-horizon t)
@@ -83,9 +84,11 @@
   :hook
   (emacs-startup . which-key-mode))
 
-(use-package page-break-lines)
+(use-package page-break-lines
+  :demand t)
 
 (use-package dashboard
+  :demand t
   :requires page-break-lines
   :preface
   (defun dashboard-init-info-with-gcs ()
