@@ -26,9 +26,9 @@
 (use-package solaire-mode
   :hook
   ((change-major-mode . turn-on-solaire-mode)
-  (after-revert . turn-on-solaire-mode)
-  (ediff-prepare-buffer . solaire-mode)
-  (minibuffer-setup . solaire-mode-in-minibuffer))
+   (after-revert . turn-on-solaire-mode)
+   (ediff-prepare-buffer . solaire-mode)
+   (minibuffer-setup . solaire-mode-in-minibuffer))
   :custom
   (solaire-mode-auto-swap-bg nil)
   :config
