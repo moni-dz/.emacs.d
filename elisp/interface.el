@@ -14,15 +14,6 @@
    'user
    '(helpful-heading ((t (:inherit variable-pitch))))))
 
-(use-package doom-themes
-  :config
-  (load-theme 'doom-horizon t)
-  (doom-themes-visual-bell-config)
-  (doom-themes-org-config)
-  :custom
-  (doom-themes-enable-bold t)
-  (doom-themes-enable-italic t))
-
 (use-package solaire-mode
   :hook
   ((change-major-mode . turn-on-solaire-mode)
@@ -33,6 +24,17 @@
   (solaire-mode-auto-swap-bg nil)
   :config
   (solaire-global-mode +1))
+
+
+(use-package doom-themes
+  :after solaire-mode
+  :config
+  (load-theme 'doom-horizon t)
+  (doom-themes-visual-bell-config)
+  (doom-themes-org-config)
+  :custom
+  (doom-themes-enable-bold t)
+  (doom-themes-enable-italic t))
 
 (use-package centaur-tabs
   :hook
