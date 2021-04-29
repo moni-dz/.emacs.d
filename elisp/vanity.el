@@ -1,5 +1,6 @@
 (use-package elcord
-  :init
+  :defer 2
+  :config
   (elcord-mode +1)
   :custom
   (elcord-use-major-mode-as-main-icon t))
