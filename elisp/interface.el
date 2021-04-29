@@ -25,7 +25,6 @@
   :config
   (solaire-global-mode +1))
 
-
 (use-package doom-themes
   :after solaire-mode
   :config
