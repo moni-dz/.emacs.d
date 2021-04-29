@@ -3,6 +3,11 @@
 ;; init time profiler
 (use-package esup)
 
+;; dired
+(custom-theme-set-faces
+ 'user
+ '(dired-header ((t (:inherit variable-pitch :height 2.0)))))
+
 ;; git client
 (use-package magit
   :commands magit
