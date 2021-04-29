@@ -1,3 +1,7 @@
+;; init time profiler
+(use-package esup)
+
+;; git client
 (use-package magit
   :commands magit)
 
@@ -18,6 +22,7 @@
   ("C-x w" . elfeed)
   :hook
   (((elfeed-search-mode elfeed-show-mode) . centaur-tabs-local-mode)
+   (elfeed-search-mode . elfeed-update)
    (elfeed-show-mode . interface/toggle-zen-mode))
   :config
   (custom-theme-set-faces
