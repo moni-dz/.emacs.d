@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (use-package flycheck
   :hook
   ((prog-mode . flycheck-mode)

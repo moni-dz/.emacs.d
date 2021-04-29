@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (prefer-coding-system 'utf-8)
 (set-buffer-file-coding-system 'utf-8)
 (set-clipboard-coding-system 'utf-8)
@@ -13,6 +15,8 @@
 (setq-default require-final-newline t
 	            indent-tabs-mode nil
               tab-width 2)
+
+(global-auto-revert-mode +1)
 
 (use-package super-save
   :config

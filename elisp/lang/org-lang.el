@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (require 'subr-x)
 
 (use-package git)

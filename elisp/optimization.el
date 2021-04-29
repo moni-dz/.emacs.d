@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;; native compilation
 (setq comp-speed 3
       comp-async-report-warnings-errors nil)

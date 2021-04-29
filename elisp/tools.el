@@ -1,9 +1,13 @@
+;;; -*- lexical-binding: t -*-
+
 ;; init time profiler
 (use-package esup)
 
 ;; git client
 (use-package magit
-  :commands magit)
+  :commands magit
+  :custom
+  (magit-section-visibility-indicator nil))
 
 ;; Some tricks had to be done in order for this to work with `doom-modeline'
 (use-package keycast

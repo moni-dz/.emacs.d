@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (use-package elcord
   :defer 2
   :config
