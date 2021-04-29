@@ -36,6 +36,26 @@
   :hook
   (prog-mode . rainbow-delimiters-mode))
 
+(use-package hl-todo
+  :hook (prog-mode . hl-todo-mode)
+  :custom
+  (hl-todo-highlight-punctuation ":")
+  (hl-todo-keyword-faces
+   `(("TODO" warning bold)
+     ("FIXME" error bold)
+     ("HACK" font-lock-constant-face bold)
+     ("REVIEW" font-lock-keyword-face bold)
+     ("NOTE" success bold)
+     ("DEPRECATED" font-lock-doc-face bold)
+     ("BUG" error bold)
+     ("XXX" font-lock-constant-face bold))))
+
+(use-package highlight-indent-guides
+  :hook
+  (prog-mode . highlight-indent-guides-mode)
+  :custom
+  (highlight-indent-guides-method 'character))
+
 (use-package evil
   :config
   (evil-mode +1))
