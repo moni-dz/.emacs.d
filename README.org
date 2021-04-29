@@ -1,0 +1,17 @@
+#+TITLE: Emacs configuration
+
+opinionated set of emacs lisp files
+
+
+* ?
+
+ * [[https://github.com/raxod502/straight.el][straight.el]] for package management
+ * [[https://github.com/raxod502/selectrum][selectrum]] for completion UI (ones you see for =M-x=, =C-h f=, =C-h v=, etc...)
+ * [[https://github.com/joaotavora/eglot][eglot]] instead of [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] for the LSP client
+ * embrace variable pitch for titles and headings
+
+** Screenshots
+
+obligatory screenshot section
+
+[[assets/emacsfull.png]]
