@@ -54,8 +54,8 @@
 (font-lock-add-keywords 'emacs-lisp-mode pkg!-font-lock-keywords)
 
 (defmacro pkg! (name &rest args)
-  "`use-package' macro that increments `packaging--loaded-packages',
-also shorter and less cumbersome"
+  "`use-package' macro that increments `packaging--loaded-packages'.
+With the added bonus that it's also shorter and less cumbersome."
   (declare (indent defun))
   (add-to-list 'packaging--loaded-packages name)
   `(use-package ,name
