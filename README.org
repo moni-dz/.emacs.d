@@ -12,6 +12,11 @@ opinionated set of emacs lisp files
  * no font icons where deemed unnecessary
  * defer *everything* if possible, some exceptions were made, (=dashboard=, =no-littering=, and others)
 
+** Notes
+
+ * Use the =(pkg! NAME &rest ARGS)= macro instead of =(use-package NAME &rest ARGS)= function.
+   - Not only is it shorter, but it also allows tracking of the amount of packages installed. (see =packaging--loaded-packages=) 
+ 
 ** Screenshots
 
 obligatory screenshot section

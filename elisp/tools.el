@@ -1,10 +1,10 @@
 ;;; -*- lexical-binding: t -*-
 
 ;; init time profiler
-(use-package esup)
+(pkg! esup)
 
 ;; dired
-(use-package diredfl
+(pkg! diredfl
   :hook (dired-mode . diredfl-global-mode)
   :config
   (custom-theme-set-faces
@@ -12,20 +12,20 @@
    '(diredfl-dir-heading ((t (:inherit variable-pitch :height 2.0))))))
 
 ;; git client
-(use-package magit
+(pkg! magit
   :commands magit
   :custom
   (magit-section-visibility-indicator nil))
 
 ;; project management
-(use-package projectile
+(pkg! projectile
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :hook
   (emacs-startup . projectile-mode))
 
 ;; Some tricks had to be done in order for this to work with `doom-modeline'
-(use-package keycast
+(pkg! keycast
   :config
   (define-minor-mode keycast-mode
     "Show current command and its keybinding in the modeline."
@@ -36,7 +36,7 @@
 
   (add-to-list 'global-mode-string '("" mode-line-keycast)))
 
-(use-package elfeed
+(pkg! elfeed
   :bind
   ("C-x w" . elfeed)
   :hook

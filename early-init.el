@@ -39,9 +39,27 @@
 
 (straight-use-package 'use-package)
 
-(setq straight-use-package-by-default t
-      use-package-always-ensure nil
-      use-package-always-defer t)
+(setq-default straight-use-package-by-default t
+              use-package-always-ensure nil
+              use-package-always-defer t)
+
+(defvar packaging--loaded-packages '()
+  "List of loaded packages.")
+
+(defconst pkg!-font-lock-keywords
+  '(("(\\(pkg!\\)\\_>[ \t']*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
+     (1 font-lock-keyword-face)
+     (2 font-lock-constant-face nil t))))
+
+(font-lock-add-keywords 'emacs-lisp-mode pkg!-font-lock-keywords)
+
+(defmacro pkg! (name &rest args)
+  "`use-package' macro that increments `packaging--loaded-packages',
+also shorter and less cumbersome"
+  (declare (indent defun))
+  (add-to-list 'packaging--loaded-packages name)
+  `(use-package ,name
+     ,@args))
 
 (defun straight-x-clean-unused-repos ()
   "Clean module repos that are unused."
@@ -51,7 +69,7 @@
                 (not (y-or-n-p (format "Delete repository %S?" repo))))
       (delete-directory (straight--repos-dir repo) 'recursive 'trash))))
 
-(use-package no-littering
+(pkg! no-littering
   :demand t
   :config
   (require 'no-littering))

@@ -5,11 +5,11 @@
  'emacs-lisp-mode-hook
  (lambda () (setq mode-name "Emacs Lisp")))
 
-(use-package highlight-defined
+(pkg! highlight-defined
   :hook
   (emacs-lisp-mode . highlight-defined-mode))
 
-(use-package aggressive-indent
+(pkg! aggressive-indent
   :hook
   (emacs-lisp-mode . aggressive-indent-mode))
 

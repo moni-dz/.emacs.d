@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
-(use-package nix-mode
+(pkg! nix-mode
   :mode "\\.nix\\'"
   :hook
   (nix-mode . eglot-ensure))

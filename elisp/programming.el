@@ -1,12 +1,12 @@
 ;;; -*- lexical-binding: t -*-
 
-(use-package flycheck
+(pkg! flycheck
   :hook
   ((prog-mode . flycheck-mode)
    ;; Emacs Lisp syntax checking has a bunch of false positives, best to disable it
    (emacs-lisp-mode . (lambda () (flycheck-mode -1)))))
 
-(use-package company
+(pkg! company
   :hook
   (prog-mode . company-mode)
   :custom
@@ -20,7 +20,7 @@
   (company-dabbrev-ignore-case nil)
   (company-dabbrev-downcase nil))
 
-(use-package eglot
+(pkg! eglot
   :hook
   (eglot--managed-mode . (lambda () (flymake-mode -1))))
 

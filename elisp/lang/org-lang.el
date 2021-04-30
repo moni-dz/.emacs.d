@@ -22,7 +22,7 @@ and set size for titles and headings"
    '(org-level-4 ((t (:inherit outline-4 :height 1.2))))
    '(org-level-5 ((t (:inherit outline-5 :height 1.0))))))
 
-(use-package org
+(pkg! org
   :straight
   '(org-plus-contrib :includes org)
   :hook
@@ -36,11 +36,11 @@ and set size for titles and headings"
   (org-hide-leading-stars t)
   (org-hide-macro-markers t))
 
-(use-package mixed-pitch
+(pkg! mixed-pitch
   :hook
   (org-mode . mixed-pitch-mode))
 
-(use-package toc-org
+(pkg! toc-org
   :after org
   :hook
   (org-mode . toc-org-mode))

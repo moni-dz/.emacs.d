@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
-(use-package rustic
+(pkg! rustic
   :custom
   (rustic-lsp-client 'eglot))
 

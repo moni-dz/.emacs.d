@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
-(use-package elcord
+(pkg! elcord
   :defer 2
   :config
   (elcord-mode +1)

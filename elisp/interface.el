@@ -1,22 +1,22 @@
 ;;; -*- lexical-binding: t -*-
 
-(use-package hide-mode-line
+(pkg! hide-mode-line
   :hook
   ((comint-mode helpful-mode help-mode) . hide-mode-line-mode))
 
-(use-package selectrum
+(pkg! selectrum
   :hook
   (emacs-startup . selectrum-mode))
 
-(use-package prescient
+(pkg! prescient
   :hook
   (emacs-startup . prescient-persist-mode))
 
-(use-package selectrum-prescient
+(pkg! selectrum-prescient
   :hook
   (emacs-startup . selectrum-prescient-mode))
 
-(use-package helpful
+(pkg! helpful
   :bind
   (("C-h f" . helpful-callable)
    ("C-h v" . helpful-variable)
@@ -26,7 +26,7 @@
    'user
    '(helpful-heading ((t (:inherit variable-pitch))))))
 
-(use-package centaur-tabs
+(pkg! centaur-tabs
   :hook
   ((dashboard-mode dired-mode) . centaur-tabs-local-mode)
   :config
@@ -36,7 +36,7 @@
   (centaur-tabs-set-bar 'under)
   (x-underline-at-descent-line t))
 
-(use-package solaire-mode
+(pkg! solaire-mode
   :hook
   ((change-major-mode . turn-on-solaire-mode)
    (after-revert . turn-on-solaire-mode)
@@ -47,7 +47,7 @@
   :config
   (solaire-global-mode +1))
 
-(use-package doom-themes
+(pkg! doom-themes
   :after solaire-mode
   :hook
   (emacs-startup . (lambda () (load-theme 'doom-horizon t)))
@@ -59,7 +59,7 @@
   (doom-themes-enable-bold t)
   (doom-themes-enable-italic t))
 
-(use-package doom-modeline
+(pkg! doom-modeline
   :hook
   (emacs-startup . doom-modeline-mode)
   :custom
@@ -69,11 +69,11 @@
   (doom-modeline-enable-word-count t)
   (doom-modeline-indent-info t))
 
-(use-package olivetti
+(pkg! olivetti
   :custom
   (olivetti-body-width 120))
 
-(use-package display-line-numbers
+(pkg! display-line-numbers
   :hook
   ((prog-mode org-mode) . display-line-numbers-mode)
   :custom
@@ -94,27 +94,27 @@
 
 (global-set-key (kbd "C-x z") 'interface/toggle-zen-mode)
 
-(use-package which-key
+(pkg! which-key
   :hook
   (emacs-startup . which-key-mode))
 
 ;; NOTE: we demand this since `dashboard' needs it
-(use-package page-break-lines
+(pkg! page-break-lines
   :demand t)
 
-(use-package dashboard
+(pkg! dashboard
   :after page-break-lines
   :preface
   (defun dashboard-init-info-with-gcs ()
     "Set a dashboard banner including information on package initialization
   time and garbage collections."
     (setq dashboard-init-info
-          (format "Ready in %s with %d garbage collections."
-                  (emacs-init-time) gcs-done)))
-  :config
-  (custom-theme-set-faces
-   'user
-   '(dashboard-items-face ((t (:inherit default)))))
+          (format "Ready in %s with %d packages loaded and %d garbage collections."
+                  (emacs-init-time) (length packaging--loaded-packages) gcs-done)))
+  :hook
+  ((after-init . dashboard-setup-startup-hook)
+   (emacs-startup . dashboard-refresh-buffer)
+   (dashboard-mode . dashboard-init-info-with-gcs))
   :custom
   (dashboard-startup-banner
    (concat user-emacs-directory "assets/emacs.png"))
@@ -123,11 +123,19 @@
   (dashboard-footer-icon "")
   (dashboard-footer-messages
    '("When I say a thing, you know it's true. So I'm calling it right here and now. This one's in the bag!"))
-  (dashboard-items '((recents . 10) (projects . 5)))
+  (dashboard-items '((recents . 6) (projects . 3)))
   (dashboard-show-shortcuts nil)
-  :hook
-  ((after-init . dashboard-setup-startup-hook)
-   (emacs-startup . dashboard-refresh-buffer)
-   (dashboard-mode . dashboard-init-info-with-gcs)))
+  (dashboard-set-navigator t)
+  (dashboard-navigator-buttons
+   `(((,""
+       "GitHub"
+       "Go to GitHub page of this Emacs configuration"
+       (lambda (&rest _) (browse-url "https://github.com/fortuneteller2k/.emacs.d"))
+       font-lock-warning-face)
+      (""
+       "Config"
+       "Find file in `user-emacs-directory'"
+       (lambda (&rest _) (find-file user-emacs-directory))
+       font-lock-warning-face)))))
 
 (provide 'interface)

@@ -5,7 +5,7 @@
       comp-async-report-warnings-errors nil)
 
 ;; Temporarily save the file-name-handler-alist
-(defvar f2k--file-name-handler-alist file-name-handler-alist)
+(defvar temp-file-name-handler-alist file-name-handler-alist)
 
 ;; Ignore .Xresources
 (advice-add #'x-apply-session-resources :override #'ignore)
@@ -17,13 +17,16 @@
       file-name-handler-alist nil)
 
 ;; and then reset it to 16MiB after with the file-name-handler-alist
-(add-hook 'emacs-startup-hook
-          (lambda ()
-	          (setq gc-cons-threshold preferred-gc-threshold
-		              gc-cons-percentage 0.1)
-            (dolist (handler f2k--file-name-handler-alist)
-              (add-to-list 'file-name-handler-alist handler))
-            (makunbound 'f2k--file-handler-alist)))
+(defun optimization/normalize ()
+	(setq gc-cons-threshold preferred-gc-threshold
+		    gc-cons-percentage 0.1)
+  (dolist (handler temp-file-name-handler-alist)
+    (add-to-list 'file-name-handler-alist handler))
+  (cl-delete-duplicates file-name-handler-alist :test 'equal)
+  (makunbound 'temp-file-name-handler-alist)
+  (garbage-collect))
+
+(add-hook 'after-init-hook #'optimization/normalize)
 
 ;; Fundamental Mode is the simplest mode
 (setq initial-major-mode 'fundamental-mode)
@@ -40,7 +43,7 @@
       frame-inhibit-implied-resize t)
 
 ;; Use the Garbage Collector Magic Hack
-(use-package gcmh
+(pkg! gcmh
   :config
   (gcmh-mode +1)
   :hook

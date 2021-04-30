@@ -28,23 +28,23 @@
 (add-hook 'emacs-startup-hook #'global-auto-revert-mode)
 (add-hook 'prog-mode-hook #'show-paren-mode)
 
-(use-package super-save
+(pkg! super-save
   :hook
   (emacs-startup . super-save-mode)
   :custom
   (super-save-auto-save-when-idle t))
 
-(use-package smartparens
+(pkg! smartparens
   :config
   (require 'smartparens-config)
   :hook
   (prog-mode . smartparens-mode))
 
-(use-package rainbow-delimiters
+(pkg! rainbow-delimiters
   :hook
   (prog-mode . rainbow-delimiters-mode))
 
-(use-package hl-todo
+(pkg! hl-todo
   :hook (prog-mode . hl-todo-mode)
   :custom
   (hl-todo-highlight-punctuation ":")
@@ -58,17 +58,17 @@
      ("BUG" error bold)
      ("XXX" font-lock-constant-face bold))))
 
-(use-package highlight-indent-guides
+(pkg! highlight-indent-guides
   :hook
   (prog-mode . highlight-indent-guides-mode)
   :custom
   (highlight-indent-guides-method 'character))
 
-(use-package evil
+(pkg! evil
   :hook
   (emacs-startup . evil-mode))
 
-(use-package ctrlf
+(pkg! ctrlf
   :hook
   (emacs-startup . ctrlf-mode))
 
