@@ -101,6 +101,9 @@
                   (emacs-init-time) gcs-done)))
   :config
   (dashboard-setup-startup-hook)
+  (custom-theme-set-faces
+   'user
+   '(dashboard-items-face ((t (:inherit default)))))
   :custom
   (dashboard-startup-banner
    (concat user-emacs-directory "assets/emacs.png"))
