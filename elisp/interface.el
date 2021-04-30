@@ -2,7 +2,7 @@
 
 (use-package hide-mode-line
   :hook
-  ((comint-mode help-mode) . hide-mode-line-mode))
+  ((comint-mode helpful-mode help-mode) . hide-mode-line-mode))
 
 (use-package selectrum
   :hook
