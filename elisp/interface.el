@@ -8,6 +8,14 @@
   :hook
   (emacs-startup . selectrum-mode))
 
+(use-package prescient
+  :hook
+  (emacs-startup . prescient-persist-mode))
+
+(use-package selectrum-prescient
+  :hook
+  (emacs-startup . selectrum-prescient-mode))
+
 (use-package helpful
   :bind
   (("C-h f" . helpful-callable)
