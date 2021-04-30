@@ -1,8 +1,12 @@
 ;;; -*- lexical-binding: t -*-
 
+(use-package hide-mode-line
+  :hook
+  ((comint-mode help-mode) . hide-mode-line-mode))
+
 (use-package selectrum
   :hook
-  (emacs-startup . (lambda () (selectrum-mode +1))))
+  (emacs-startup . selectrum-mode))
 
 (use-package helpful
   :bind
@@ -24,18 +28,19 @@
   (centaur-tabs-set-bar 'under)
   (x-underline-at-descent-line t))
 
-  (use-package solaire-mode
-    :hook
-    ((change-major-mode . turn-on-solaire-mode)
-     (after-revert . turn-on-solaire-mode)
-     (ediff-prepare-buffer . solaire-mode)
-     (minibuffer-setup . solaire-mode-in-minibuffer))
-    :custom
-    (solaire-mode-auto-swap-bg nil)
-    :config
-    (solaire-global-mode +1))
+(use-package solaire-mode
+  :hook
+  ((change-major-mode . turn-on-solaire-mode)
+   (after-revert . turn-on-solaire-mode)
+   (ediff-prepare-buffer . solaire-mode)
+   (minibuffer-setup . solaire-mode-in-minibuffer))
+  :custom
+  (solaire-mode-auto-swap-bg nil)
+  :config
+  (solaire-global-mode +1))
 
 (use-package doom-themes
+  :after solaire-mode
   :hook
   (emacs-startup . (lambda () (load-theme 'doom-horizon t)))
   :after solaire-mode
@@ -90,8 +95,7 @@
   :demand t)
 
 (use-package dashboard
-  :demand t
-  :requires page-break-lines
+  :after page-break-lines
   :preface
   (defun dashboard-init-info-with-gcs ()
     "Set a dashboard banner including information on package initialization
@@ -100,7 +104,6 @@
           (format "Ready in %s with %d garbage collections."
                   (emacs-init-time) gcs-done)))
   :config
-  (dashboard-setup-startup-hook)
   (custom-theme-set-faces
    'user
    '(dashboard-items-face ((t (:inherit default)))))
@@ -115,7 +118,8 @@
   (dashboard-items '((recents . 10) (projects . 5)))
   (dashboard-show-shortcuts nil)
   :hook
-  ((emacs-startup . dashboard-refresh-buffer)
+  ((after-init . dashboard-setup-startup-hook)
+   (emacs-startup . dashboard-refresh-buffer)
    (dashboard-mode . dashboard-init-info-with-gcs)))
 
 (provide 'interface)

@@ -19,14 +19,18 @@
 	            indent-tabs-mode nil
               tab-width 2)
 
-(add-hook 'emacs-startup-hook
-          #'(lambda ()
-              (global-auto-revert-mode +1)
-              (show-paren-mode +1)))
+(when (display-graphic-p)
+  (add-hook 'prog-mode-hook #'hl-line-mode)
+  (add-hook 'org-mode #'hl-line-mode)
+  (add-hook 'text-mode-hook #'hl-line-mode)
+  (add-hook 'conf-mode #'hl-line-mode))
+
+(add-hook 'emacs-startup-hook #'global-auto-revert-mode)
+(add-hook 'prog-mode-hook #'show-paren-mode)
 
 (use-package super-save
   :hook
-  (emacs-startup . (lambda () (super-save-mode +1)))
+  (emacs-startup . super-save-mode)
   :custom
   (super-save-auto-save-when-idle t))
 
@@ -62,10 +66,10 @@
 
 (use-package evil
   :hook
-  (emacs-startup . (lambda () (evil-mode +1))))
+  (emacs-startup . evil-mode))
 
 (use-package ctrlf
   :hook
-  (emacs-startup . (lambda () (ctrlf-mode +1))))
+  (emacs-startup . ctrlf-mode))
 
 (provide 'editor)
