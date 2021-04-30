@@ -14,16 +14,26 @@
    'user
    '(helpful-heading ((t (:inherit variable-pitch))))))
 
-(use-package solaire-mode
+(use-package centaur-tabs
   :hook
-  ((change-major-mode . turn-on-solaire-mode)
-   (after-revert . turn-on-solaire-mode)
-   (ediff-prepare-buffer . solaire-mode)
-   (minibuffer-setup . solaire-mode-in-minibuffer))
-  :custom
-  (solaire-mode-auto-swap-bg nil)
+  ((dashboard-mode dired-mode) . centaur-tabs-local-mode)
   :config
-  (solaire-global-mode +1))
+  (centaur-tabs-mode +1)
+  :custom
+  (centaur-tabs-style "bar")
+  (centaur-tabs-set-bar 'under)
+  (x-underline-at-descent-line t))
+
+  (use-package solaire-mode
+    :hook
+    ((change-major-mode . turn-on-solaire-mode)
+     (after-revert . turn-on-solaire-mode)
+     (ediff-prepare-buffer . solaire-mode)
+     (minibuffer-setup . solaire-mode-in-minibuffer))
+    :custom
+    (solaire-mode-auto-swap-bg nil)
+    :config
+    (solaire-global-mode +1))
 
 (use-package doom-themes
   :hook
@@ -35,15 +45,6 @@
   :custom
   (doom-themes-enable-bold t)
   (doom-themes-enable-italic t))
-
-(use-package centaur-tabs
-  :hook
-  (dashboard-mode . centaur-tabs-local-mode)
-  :config
-  (setq x-underline-at-descent-line t)
-  (centaur-tabs-mode +1)
-  :custom
-  (centaur-tabs-set-bar 'under))
 
 (use-package doom-modeline
   :hook
