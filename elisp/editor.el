@@ -34,6 +34,12 @@
   :custom
   (super-save-auto-save-when-idle t))
 
+(pkg! beacon
+  :hook
+  (focus-in . beacon-blink)
+  :config
+  (beacon-mode))
+
 (pkg! smartparens
   :config
   (require 'smartparens-config)
