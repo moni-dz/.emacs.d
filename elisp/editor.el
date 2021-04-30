@@ -19,7 +19,10 @@
 	            indent-tabs-mode nil
               tab-width 2)
 
-(global-auto-revert-mode +1)
+(add-hook 'emacs-startup-hook
+          #'(lambda ()
+              (global-auto-revert-mode +1)
+              (show-paren-mode +1)))
 
 (use-package super-save
   :hook
@@ -32,8 +35,6 @@
   (require 'smartparens-config)
   :hook
   (prog-mode . smartparens-mode))
-
-(show-paren-mode t)
 
 (use-package rainbow-delimiters
   :hook
