@@ -112,7 +112,7 @@
   (dashboard-footer-icon "")
   (dashboard-footer-messages
    '("When I say a thing, you know it's true. So I'm calling it right here and now. This one's in the bag!"))
-  (dashboard-items '((recents . 10)))
+  (dashboard-items '((recents . 10) (projects . 5)))
   (dashboard-show-shortcuts nil)
   :hook
   ((emacs-startup . dashboard-refresh-buffer)

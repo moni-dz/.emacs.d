@@ -17,6 +17,13 @@
   :custom
   (magit-section-visibility-indicator nil))
 
+;; project management
+(use-package projectile
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :hook
+  (emacs-startup . projectile-mode))
+
 ;; Some tricks had to be done in order for this to work with `doom-modeline'
 (use-package keycast
   :config
