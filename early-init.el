@@ -5,14 +5,16 @@
 
 (tooltip-mode -1)
 
-(push '(menu-bar-lines . 0) default-frame-alist)
-(push '(tool-bar-lines . 0) default-frame-alist)
-(push '(vertical-scroll-bars) default-frame-alist)
+(add-to-list 'default-frame-alist '(menu-bar-lines . 0))
+(add-to-list 'default-frame-alist '(tool-bar-lines . 0))
+(add-to-list 'default-frame-alist '(font . "Iosevka FT Light-10.5"))
+(add-to-list 'default-frame-alist '(vertical-scroll-bars))
 
 (when (featurep 'ns)
   (push '(ns-transparent-titlebar . t) default-frame-alist))
 
-(setq ring-bell-function 'ignore
+(setq frame-inhibit-implied-resize t
+      ring-bell-function 'ignore
       visible-bell nil
       uniquify-buffer-name-style 'post-forward-angle-brackets
       inhibit-startup-screen t
@@ -22,7 +24,8 @@
       package-enable-at-startup nil
       straight-cache-autoloads t
       straight-check-for-modifications '(check-on-save find-when-checking)
-      straight-repository-branch "develop")
+      straight-repository-branch "develop"
+      load-prefer-newer noninteractive)
 
 (defvar bootstrap-version)
 (let ((bootstrap-file

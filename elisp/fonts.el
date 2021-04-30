@@ -1,16 +1,10 @@
 ;;; -*- lexical-binding: t -*-
 
-(defconst fonts/monospace
-  "Iosevka FT"
-  "Default monospace font")
-
 (defconst fonts/variable-pitch
   "Sarasa Gothic J"
   "Default variable width font")
 
 (defun fonts/set-fonts ()
-  (set-face-attribute 'default nil :family fonts/monospace :height 105 :weight 'light)
-  (set-face-attribute 'fixed-pitch nil :family fonts/monospace)
   (set-face-attribute 'fixed-pitch-serif nil :family fonts/variable-pitch)
   (set-face-attribute 'variable-pitch nil :family fonts/variable-pitch))
 

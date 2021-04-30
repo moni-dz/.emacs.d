@@ -51,7 +51,6 @@
   :after solaire-mode
   :hook
   (emacs-startup . (lambda () (load-theme 'doom-horizon t)))
-  :after solaire-mode
   :config
   (doom-themes-visual-bell-config)
   (doom-themes-org-config)
