@@ -108,7 +108,7 @@
   time and garbage collections."
     (setq dashboard-init-info
           (format "Ready in %s with %d packages loaded and %d garbage collections."
-                  (emacs-init-time) (length packaging--loaded-packages) gcs-done)))
+                  (emacs-init-time) (length pkg!-installed) gcs-done)))
   :hook
   ((after-init . dashboard-setup-startup-hook)
    (emacs-startup . dashboard-refresh-buffer)

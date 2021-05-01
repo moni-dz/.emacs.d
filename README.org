@@ -15,7 +15,7 @@ opinionated set of emacs lisp files
 ** Notes
 
  * Use the =(pkg! NAME &rest ARGS)= macro instead of =(use-package NAME &rest ARGS)= function.
-   - Not only is it shorter, but it also allows tracking of the amount of packages installed. (see =packaging--loaded-packages=) 
+   - Not only is it shorter, but it also allows tracking of the amount of packages installed. (see =pkg!-installed=) 
 
 *** Tips, Tricks, and Magic
 

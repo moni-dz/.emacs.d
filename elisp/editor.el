@@ -8,25 +8,27 @@
 (set-selection-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
 
-(setq buffer-file-coding-system 'utf-8
-      save-buffer-coding-system 'utf-8
-      auto-save-default nil
-      scroll-step 1
-      scroll-conservatively 10000
-      auto-window-vscroll nil)
-
-(setq-default require-final-newline t
-	            indent-tabs-mode nil
+(setq-default buffer-file-coding-system 'utf-8
+              save-buffer-coding-system 'utf-8
+              auto-save-default nil
+              scroll-step 1
+              scroll-conservatively 10000
+              auto-window-vscroll nil
+              require-final-newline t
+              indent-tabs-mode nil
               tab-width 2)
 
-(when (display-graphic-p)
-  (add-hook 'prog-mode-hook #'hl-line-mode)
-  (add-hook 'org-mode #'hl-line-mode)
-  (add-hook 'text-mode-hook #'hl-line-mode)
-  (add-hook 'conf-mode #'hl-line-mode))
+(pkg! paren
+  :hook
+  (prog-mode . show-paren-mode))
 
-(add-hook 'emacs-startup-hook #'global-auto-revert-mode)
-(add-hook 'prog-mode-hook #'show-paren-mode)
+(pkg! hl-line
+  :hook
+  ((prog-mode org-mode text-mode conf-mode) . hl-line-mode))
+
+(pkg! autorevert
+  :hook
+  (emacs-startup . global-auto-revert-mode))
 
 (pkg! super-save
   :hook

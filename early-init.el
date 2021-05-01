@@ -46,8 +46,8 @@
               use-package-always-ensure nil
               use-package-always-defer t)
 
-(defvar packaging--loaded-packages '()
-  "List of loaded packages.")
+(defvar pkg!-installed '()
+  "List of installed packages.")
 
 (defconst pkg!-font-lock-keywords
   '(("(\\(pkg!\\)\\_>[ \t']*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
@@ -60,7 +60,7 @@
   "`use-package' macro that increments `packaging--loaded-packages'.
 With the added bonus that it's also shorter and less cumbersome."
   (declare (indent defun))
-  (add-to-list 'packaging--loaded-packages name)
+  (add-to-list 'pkg!-installed name)
   `(use-package ,name
      ,@args))
 

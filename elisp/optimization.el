@@ -19,8 +19,8 @@
 
 ;; and then reset it to 16MiB after with the file-name-handler-alist
 (defun optimization/normalize ()
-	(setq gc-cons-threshold preferred-gc-threshold
-		    gc-cons-percentage 0.1)
+	(setq-default gc-cons-threshold preferred-gc-threshold
+		            gc-cons-percentage 0.1)
   (garbage-collect))
 
 (add-hook 'emacs-startup-hook #'optimization/normalize)
