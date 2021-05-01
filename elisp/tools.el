@@ -1,7 +1,8 @@
 ;;; -*- lexical-binding: t -*-
 
 ;; init time profiler
-(pkg! esup)
+(pkg! esup
+  :commands esup)
 
 ;; dired
 (pkg! diredfl
@@ -10,6 +11,20 @@
   (custom-theme-set-faces
    'user
    '(diredfl-dir-heading ((t (:inherit variable-pitch :height 2.0))))))
+
+;; ibuffer
+(pkg! ibuffer
+  :bind
+  ("C-x C-b" . ibuffer))
+
+(pkg! ibuffer-vc
+  :after ibuffer
+  :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root))
+
+(pkg! ibuffer-projectile
+  :after ibuffer
+  :hook
+  (ibuffer . ibuffer-projectile-set-filter-groups))
 
 ;; git client
 (pkg! magit
