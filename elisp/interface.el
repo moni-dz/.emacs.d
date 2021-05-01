@@ -97,12 +97,11 @@
   :hook
   (emacs-startup . which-key-mode))
 
-;; NOTE: we demand this since `dashboard' needs it
 (pkg! page-break-lines
-  :demand t)
+  :hook
+  (emacs-startup . global-page-break-lines-mode))
 
 (pkg! dashboard
-  :after page-break-lines
   :preface
   (defun dashboard-init-info-with-gcs ()
     "Set a dashboard banner including information on package initialization
@@ -116,13 +115,13 @@
    (dashboard-mode . dashboard-init-info-with-gcs))
   :custom
   (dashboard-startup-banner
-   (concat user-emacs-directory "assets/emacs.png"))
+   (concat user-emacs-directory "assets/slark.png"))
   (dashboard-banner-logo-title "everyone's favorite lisp interpreter")
   (dashboard-center-content t)
   (dashboard-footer-icon "")
   (dashboard-footer-messages
    '("When I say a thing, you know it's true. So I'm calling it right here and now. This one's in the bag!"))
-  (dashboard-items '((recents . 6) (projects . 3)))
+  (dashboard-items '((recents . 4) (projects . 2)))
   (dashboard-show-shortcuts nil)
   (dashboard-set-navigator t)
   (dashboard-navigator-buttons

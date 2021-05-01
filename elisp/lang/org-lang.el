@@ -23,6 +23,8 @@ and set size for titles and headings"
    '(org-level-5 ((t (:inherit outline-5 :height 1.0))))))
 
 (pkg! org
+  :mode
+  ("\\.org\\'" . org-mode)
   :straight
   '(org-plus-contrib :includes org)
   :hook
