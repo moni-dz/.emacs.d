@@ -16,9 +16,33 @@ opinionated set of emacs lisp files
 
  * Use the =(pkg! NAME &rest ARGS)= macro instead of =(use-package NAME &rest ARGS)= function.
    - Not only is it shorter, but it also allows tracking of the amount of packages installed. (see =packaging--loaded-packages=) 
- 
+
+*** Tips, Tricks, and Magic
+
+I employ several magical hacks, tips and tricks, used by other Emacs users, in order for my =emacs-init-time=,  be under 1 second.
+
+ * Avoid =set-face-attribute= when possible.
+   - In the case where this isn't possible, hook these calls to =emacs-startup=.
+
+ * Frame modifications must be done in =early-init.el=.
+
+ * Defer loading of packages with =(setq use-package-always-defer t)=.
+   - This is the most important and impactful.
+   - Employ the use of =:hook=, =:bind=, =:mode=, and others to load packages when they are needed.
+
+ * Relax the garbage collector during start up.
+   - Also use =gcmh=, the Garbage Collector Magic Hack.
+
+ * Unset =file-name-handler-alist= during start up.
+
+ * Set the initial major mode to =fundamental-mode=.
+
+ * Use the latest Emacs from Git, where the =native-comp= feature has been merged.
+
 ** Screenshots
 
 obligatory screenshot section
+
+[[assets/emacssplash.png]]
 
 [[assets/emacsfull.png]]

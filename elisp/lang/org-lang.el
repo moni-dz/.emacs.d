@@ -30,7 +30,6 @@ and set size for titles and headings"
   :hook
   ((org-mode . org-mode-remove-stars)
    (org-mode . visual-line-mode)
-   (org-mode . org-indent-mode)
    (org-mode . org/prettify-appearance))
   :custom
   (org-hide-emphasis-markers t)

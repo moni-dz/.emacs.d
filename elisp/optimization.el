@@ -50,10 +50,9 @@
 
 ;; Use the Garbage Collector Magic Hack
 (pkg! gcmh
-  :config
-  (gcmh-mode +1)
   :hook
-  (focus-out . gcmh-idle-garbage-collect)
+  ((emacs-startup . gcmh-mode)
+   (focus-out . gcmh-idle-garbage-collect))
   :custom
   (gcmh-verbose nil)
   (gcmh-idle-delay 6)
