@@ -18,6 +18,8 @@
               indent-tabs-mode nil
               tab-width 2)
 
+(add-hook 'emacs-startup-hook #'global-visual-line-mode)
+
 (pkg! paren
   :hook
   (prog-mode . show-paren-mode))
