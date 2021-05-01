@@ -46,7 +46,7 @@
               use-package-always-ensure nil
               use-package-always-defer t)
 
-(defvar pkg!-installed '()
+(defvar pkg!-installed '(use-package)
   "List of installed packages.")
 
 (defconst pkg!-font-lock-keywords
