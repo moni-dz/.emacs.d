@@ -10,10 +10,13 @@
 (add-to-list 'default-frame-alist '(font . "Iosevka FT Light-10.5"))
 (add-to-list 'default-frame-alist '(vertical-scroll-bars))
 
-(when (featurep 'ns)
-  (push '(ns-transparent-titlebar . t) default-frame-alist))
+(setq-default use-dialog-box nil)
 
-(setq frame-inhibit-implied-resize t
+(when (featurep 'ns)
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t)))
+
+(setq custom-file (if (memq system-type '(gnu/linux darwin)) "/dev/null" "NUL")
+      frame-inhibit-implied-resize t
       ring-bell-function 'ignore
       visible-bell nil
       uniquify-buffer-name-style 'post-forward-angle-brackets
@@ -46,7 +49,7 @@
               use-package-always-ensure nil
               use-package-always-defer t)
 
-(defvar pkg!-installed '(use-package)
+(defvar pkg!-installed '(straight use-package)
   "List of installed packages.")
 
 (defconst pkg!-font-lock-keywords
@@ -76,6 +79,12 @@ With the added bonus that it's also shorter and less cumbersome."
   :demand t
   :config
   (require 'no-littering))
+
+(pkg! exec-path-from-shell
+  :if (memq window-system '(mac ns x))
+  :demand t
+  :config
+  (exec-path-from-shell-initialize))
 
 (add-to-list 'load-path (concat user-emacs-directory "elisp"))
 (add-to-list 'load-path (concat user-emacs-directory "elisp/lang"))
