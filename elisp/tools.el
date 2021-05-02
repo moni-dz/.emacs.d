@@ -15,7 +15,9 @@
 ;; ibuffer
 (pkg! ibuffer
   :bind
-  ("C-x C-b" . ibuffer))
+  ("C-x C-b" . ibuffer)
+  :hook
+  (ibuffer . centaur-tabs-local-mode))
 
 (pkg! ibuffer-vc
   :after ibuffer
