@@ -20,6 +20,15 @@
 
 (add-hook 'emacs-startup-hook #'global-visual-line-mode)
 
+(pkg! unicode-fonts
+  :hook
+  (emacs-startup . unicode-fonts-setup))
+
+(pkg! format-all
+  :commands format-all-buffer
+  :hook
+  (prog-mode . format-all-ensure-formatter))
+
 (pkg! paren
   :hook
   (prog-mode . show-paren-mode))
