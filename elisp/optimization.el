@@ -15,7 +15,13 @@
       gc-cons-percentage 0.6
       preferred-gc-threshold 16777216)
 
-(setq-default file-name-handler-alist nil)
+(setq-default file-name-handler-alist nil
+              create-lockfiles nil
+              bidi-display-reordering nil
+              cursor-in-non-selected-windows nil
+              highlight-nonselected-windows nil
+              frame-inhibit-implied-resize t
+              inhibit-compacting-font-caches nil)
 
 ;; and then reset it to 16MiB after with the file-name-handler-alist
 (defun optimization/normalize ()
@@ -40,13 +46,6 @@
 
 ;; Escape key cancels anything
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-(setq create-lockfiles nil
-      inhibit-compacting-font-caches nil
-      bidi-display-reordering nil
-      cursor-in-non-selected-windows nil
-      highlight-nonselected-windows nil
-      frame-inhibit-implied-resize t)
 
 ;; Use the Garbage Collector Magic Hack
 (pkg! gcmh
