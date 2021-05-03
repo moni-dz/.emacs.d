@@ -10,25 +10,23 @@
 (add-to-list 'default-frame-alist '(font . "Iosevka FT Light-10.5"))
 (add-to-list 'default-frame-alist '(vertical-scroll-bars))
 
-(setq-default use-dialog-box nil)
-
 (when (featurep 'ns)
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t)))
 
-(setq custom-file (if (memq system-type '(gnu/linux darwin)) "/dev/null" "NUL")
-      frame-inhibit-implied-resize t
-      ring-bell-function 'ignore
-      visible-bell nil
-      uniquify-buffer-name-style 'post-forward-angle-brackets
-      inhibit-startup-screen t
-      inhibit-startup-message t
-      inhibit-startup-echo-area-message t
-      initial-scratch-message nil
-      package-enable-at-startup nil
-      straight-cache-autoloads t
-      straight-check-for-modifications '(check-on-save find-when-checking)
-      straight-repository-branch "develop"
-      load-prefer-newer noninteractive)
+(setq-default use-dialog-box nil
+              custom-file (if (memq system-type '(gnu/linux darwin)) "/dev/null" "NUL")
+              frame-inhibit-implied-resize t
+              ring-bell-function 'ignore
+              visible-bell nil
+              uniquify-buffer-name-style 'post-forward-angle-brackets
+              inhibit-startup-screen t
+              inhibit-startup-message t
+              inhibit-startup-echo-area-message t
+              initial-scratch-message nil
+              package-enable-at-startup nil
+              straight-cache-autoloads t
+              straight-check-for-modifications '(check-on-save find-when-checking)
+              straight-repository-branch "develop")
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
