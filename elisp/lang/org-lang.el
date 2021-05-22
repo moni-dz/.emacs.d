@@ -26,7 +26,7 @@ and set size for titles and headings"
   :mode
   ("\\.org\\'" . org-mode)
   :straight
-  '(org-plus-contrib :includes org)
+  (:type git :url "https://code.orgmode.org/bzg/org-mode")
   :hook
   ((org-mode . org-mode-remove-stars)
    (org-mode . org/prettify-appearance))

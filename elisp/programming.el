@@ -18,7 +18,8 @@
   (company-backends '(company-capf))
   (company-dabbrev-other-buffers nil)
   (company-dabbrev-ignore-case nil)
-  (company-dabbrev-downcase nil))
+  (company-dabbrev-downcase nil)
+  (company-format-margin-function nil))
 
 (pkg! eglot
   :hook

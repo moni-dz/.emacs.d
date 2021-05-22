@@ -58,6 +58,6 @@
   (gcmh-high-cons-threshold 16777216))
 
 ;; Show only errors, not warnings
-(setq warning-minimum-level :error)
+(setq-default warning-minimum-level :error)
 
 (provide 'optimization)

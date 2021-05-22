@@ -4,38 +4,17 @@
   :hook
   ((comint-mode helpful-mode help-mode) . hide-mode-line-mode))
 
-(pkg! ivy
+(pkg! selectrum
   :hook
-  (emacs-startup . ivy-mode)
-  :custom
-  (ivy-use-virtual-buffers t)
-  (enable-recustive-minibuffers t)
-  (ivy-use-selectable-prompt t))
-
-(pkg! ivy-rich
-  :after ivy
-  :hook
-  (ivy-mode . ivy-rich-mode))
-
-(pkg! counsel
-  :after ivy
-  :bind
-  ("C-c C-t" . counsel-load-theme)
-  :hook
-  (emacs-startup . counsel-mode))
-
-(pkg! swiper
-  :after ivy
-  :bind
-  ("C-s" . swiper))
+  (emacs-startup . selectrum-mode))
 
 (pkg! prescient
   :hook
   (emacs-startup . prescient-persist-mode))
 
-(pkg! ivy-prescient
+(pkg! selectrum-prescient
   :hook
-  (emacs-startup . ivy-prescient-mode))
+  (emacs-startup . selectrum-prescient-mode))
 
 (pkg! helpful
   :bind
@@ -142,24 +121,14 @@
   (dashboard-footer-icon "")
   (dashboard-footer-messages
    '("When I say a thing, you know it's true. So I'm calling it right here and now. This one's in the bag!"))
-  (dashboard-items '((recents . 4) (projects . 2)))
+  (dashboard-items '((recents . 4)))
   (dashboard-show-shortcuts nil)
   (dashboard-set-navigator t)
   (dashboard-navigator-buttons
    `(((,""
-       "Theme"
-       "Change theme temporarily"
-       (lambda (&rest _) (counsel-load-theme))
-       font-lock-keyword-face)
-      (""
        "GitHub"
        "Go to GitHub page of this Emacs configuration"
        (lambda (&rest _) (browse-url "https://github.com/fortuneteller2k/.emacs.d"))
-       font-lock-warning-face)
-      (""
-       "Config"
-       "Find file in `user-emacs-directory'"
-       (lambda (&rest _) (counsel-find-file user-emacs-directory))
        font-lock-warning-face)
       (""
        "Update"
