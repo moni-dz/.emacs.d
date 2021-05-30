@@ -40,12 +40,12 @@
                                  temp-file-name-handler-alist))))
     (add-hook 'emacs-startup-hook #'reset-file-handler-alist-h)))
 
+;; F5 cancels anything
+(global-set-key (kbd "<f5>") #'keyboard-escape-quit)
+
 ;; Fundamental Mode is the simplest mode
 (setq initial-major-mode 'fundamental-mode)
 (defalias 'yes-or-no-p 'y-or-n-p)
-
-;; Escape key cancels anything
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Use the Garbage Collector Magic Hack
 (pkg! gcmh

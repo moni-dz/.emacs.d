@@ -83,9 +83,16 @@
   :custom
   (highlight-indent-guides-method 'character))
 
-(pkg! evil
+(setq god-mode-enable-function-key-translation nil)
+
+(pkg! god-mode
   :hook
-  (emacs-startup . evil-mode))
+  (emacs-startup . god-mode)
+  :bind
+  ("<escape>" . god-mode-all)
+  :custom
+  (god-exempt-major-modes nil)
+  (god-exempt-predicates nil))
 
 (pkg! ctrlf
   :hook
