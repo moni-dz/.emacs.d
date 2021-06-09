@@ -4,6 +4,10 @@
   :hook
   ((comint-mode helpful-mode help-mode) . hide-mode-line-mode))
 
+(pkg! conceal
+  :straight
+  (:type git :host github :repo "lepisma/conceal"))
+
 (pkg! selectrum
   :hook
   (emacs-startup . selectrum-mode))
@@ -40,8 +44,7 @@
   :hook
   ((change-major-mode . turn-on-solaire-mode)
    (after-revert . turn-on-solaire-mode)
-   (ediff-prepare-buffer . solaire-mode)
-   (minibuffer-setup . solaire-mode-in-minibuffer))
+   (ediff-prepare-buffer . solaire-mode))
   :custom
   (solaire-mode-auto-swap-bg nil)
   :config
@@ -82,20 +85,33 @@
 (defun interface/toggle-zen-mode ()
   "Toggle a distraction-free environment for writing."
   (interactive)
+
+  (defface regular-face
+  	'((nil :family "Iosevka FT" :height 105))
+    "Regular face")
+
+  (defface zen-mode-face
+  	'((nil :family "Iosevka FT" :height 120))
+    "Zen mode face")
+
   (cond ((bound-and-true-p olivetti-mode)
          (olivetti-mode -1)
          (centaur-tabs-local-mode -1)
-         (display-line-numbers-mode +1))
+         (display-line-numbers-mode +1)
+         (buffer-face-set 'regular-face))
         (t
          (olivetti-mode +1)
          (centaur-tabs-local-mode +1)
-         (display-line-numbers-mode -1))))
+         (display-line-numbers-mode -1)
+         (buffer-face-set 'zen-mode-face))))
 
 (global-set-key (kbd "C-x z") 'interface/toggle-zen-mode)
 
 (pkg! which-key
   :hook
-  (emacs-startup . which-key-mode))
+  (emacs-startup . which-key-mode)
+  :config
+  (which-key-enable-god-mode-support))
 
 (pkg! page-break-lines
   :hook

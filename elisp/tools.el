@@ -4,6 +4,8 @@
 (pkg! esup
   :commands esup)
 
+(pkg! command-log-mode)
+
 ;; dired
 (pkg! diredfl
   :hook (dired-mode . diredfl-global-mode)

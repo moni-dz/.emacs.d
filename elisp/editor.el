@@ -83,13 +83,18 @@
   :custom
   (highlight-indent-guides-method 'character))
 
+(global-set-key (kbd "C-c k") #'kill-buffer-and-window)
+
 (setq god-mode-enable-function-key-translation nil)
 
 (pkg! god-mode
   :hook
-  (emacs-startup . god-mode)
+  ((emacs-startup . god-mode)
+   (god-mode-enabled . (lambda () (setq cursor-type 'box)))
+   (god-mode-disabled . (lambda () (setq cursor-type 'bar))))
   :bind
-  ("<escape>" . god-mode-all)
+  (("<escape>" . god-mode-all)
+   (:map god-local-mode-map ("i" . god-local-mode)))
   :custom
   (god-exempt-major-modes nil)
   (god-exempt-predicates nil))
