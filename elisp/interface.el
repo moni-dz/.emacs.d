@@ -73,7 +73,7 @@
 
 (pkg! olivetti
   :custom
-  (olivetti-body-width 120))
+  (olivetti-body-width 140))
 
 (pkg! display-line-numbers
   :hook

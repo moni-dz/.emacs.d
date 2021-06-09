@@ -9,6 +9,10 @@
   :hook
   (emacs-lisp-mode . highlight-defined-mode))
 
+(pkg! paredit
+  :hook
+  (emacs-lisp-mode . enable-paredit-mode))
+
 (pkg! aggressive-indent
   :hook
   (emacs-lisp-mode . aggressive-indent-mode))
