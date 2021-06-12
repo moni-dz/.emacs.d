@@ -59,10 +59,6 @@
   :hook
   (prog-mode . smartparens-mode))
 
-(pkg! rainbow-delimiters
-  :hook
-  (prog-mode . rainbow-delimiters-mode))
-
 (pkg! hl-todo
   :hook (prog-mode . hl-todo-mode)
   :custom
@@ -83,7 +79,15 @@
   :custom
   (highlight-indent-guides-method 'character))
 
-(global-set-key (kbd "C-c k") #'kill-buffer-and-window)
+(defun kill-other-buffers ()
+  "Kill all other buffers"
+  (interactive)
+  (mapc 'kill-buffer
+        (delq (current-buffer)
+              (remove-if-not 'buffer-file-name (buffer-list)))))
+
+(global-set-key (kbd "C-c k") #'kill-other-buffers)
+(global-set-key (kbd "C-c C-k") #'kill-buffer-and-window)
 
 (setq god-mode-enable-function-key-translation nil)
 
