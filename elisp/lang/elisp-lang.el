@@ -9,9 +9,14 @@
   :hook
   (emacs-lisp-mode . highlight-defined-mode))
 
-(pkg! paredit
+(pkg! lisp-butt-mode
   :hook
-  (emacs-lisp-mode . enable-paredit-mode))
+  (emacs-lisp-mode . lisp-butt-mode))
+
+(pkg! parinfer-rust-mode
+  :hook emacs-lisp-mode
+  :init
+  (setq parinfer-rust-auto-download t))
 
 (pkg! aggressive-indent
   :hook

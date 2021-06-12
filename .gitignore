@@ -13,3 +13,4 @@ flycheck_*.el
 *.el#
 eln-cache
 etc
+parinfer-rust
