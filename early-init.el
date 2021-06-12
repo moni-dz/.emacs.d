@@ -26,7 +26,8 @@
               package-enable-at-startup nil
               straight-cache-autoloads t
               straight-check-for-modifications '(check-on-save find-when-checking)
-              straight-repository-branch "develop")
+              straight-repository-branch "develop"
+              vc-handled-backends nil)
 
 (defvar bootstrap-version)
 
