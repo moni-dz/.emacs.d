@@ -3,8 +3,20 @@
 (pkg! flycheck
   :hook
   ((prog-mode . flycheck-mode)
-   ;; Emacs Lisp syntax checking has a bunch of false positives, best to disable it
+   ;; Too much false positives, best to be disabled
    (emacs-lisp-mode . (lambda () (flycheck-mode -1)))))
+
+(pkg! flycheck-popup-tip
+  :after flycheck
+  :hook
+  (flycheck-mode . flycheck-popup-tip-mode))
+
+(pkg! flycheck-posframe
+  :after flycheck
+  :hook
+  (flycheck-mode . flycheck-posframe-mode)
+  :config
+  (flycheck-posframe-configure-pretty-defaults))
 
 (pkg! company
   :hook
@@ -19,13 +31,17 @@
   (company-format-margin-function nil))
 
 (pkg! eglot
+  :straight (:type git :host github :repo "joaotavora/eglot")
   :hook
-  (eglot--managed-mode . (lambda () (flymake-mode -1))))
+  (eglot--managed-mode . (lambda () (flymake-mode -1)))
+  :config
+  (add-to-list 'eglot-server-programs '(nim-mode . ("nimlsp"))))
 
 (require 'c-cxx-lang)
 (require 'nix-lang)
 (require 'org-lang)
 (require 'rust-lang)
 (require 'elisp-lang)
+(require 'nim-lang)
 
 (provide 'programming)

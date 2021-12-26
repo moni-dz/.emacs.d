@@ -5,9 +5,17 @@
  'emacs-lisp-mode-hook
  (lambda () (setq mode-name "Emacs Lisp")))
 
+(pkg! highlight-quoted
+  :hook
+  (emacs-lisp-mode . highlight-quoted-mode))
+
 (pkg! highlight-defined
   :hook
   (emacs-lisp-mode . highlight-defined-mode))
+
+(pkg! elisp-def
+  :hook
+  ((emacs-lisp-mode ielm-mode) . elisp-def-mode))
 
 (pkg! lisp-butt-mode
   :hook

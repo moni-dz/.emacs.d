@@ -5,11 +5,13 @@
 
 (tooltip-mode -1)
 
+;; Early frame modifications
 (add-to-list 'default-frame-alist '(menu-bar-lines . 0))
 (add-to-list 'default-frame-alist '(tool-bar-lines . 0))
-(add-to-list 'default-frame-alist '(font . "Iosevka FT Light-10.5"))
+(add-to-list 'default-frame-alist '(font . "Iosevka FT-10.5"))
 (add-to-list 'default-frame-alist '(vertical-scroll-bars))
 
+;; In the unlikely case you use NeXTStep
 (when (featurep 'ns)
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t)))
 
@@ -27,7 +29,8 @@
               straight-cache-autoloads t
               straight-check-for-modifications '(check-on-save find-when-checking)
               straight-repository-branch "develop"
-              vc-handled-backends nil)
+              vc-handled-backends nil
+              fringes-outside-margins t)
 
 (defvar bootstrap-version)
 
@@ -89,4 +92,5 @@ With the added bonus that it's also shorter and less cumbersome."
 (add-to-list 'load-path (concat user-emacs-directory "elisp"))
 (add-to-list 'load-path (concat user-emacs-directory "elisp/lang"))
 
+(setq-default flycheck-emacs-lisp-load-path load-path)
 ;;; early-init.el ends here

@@ -3,6 +3,6 @@
 (pkg! nix-mode
   :mode "\\.nix\\'"
   :hook
-  (nix-mode . eglot-ensure))
+  (nix-mode . lsp-deferred))
 
 (provide 'nix-lang)

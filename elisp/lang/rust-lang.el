@@ -3,7 +3,7 @@
 (pkg! rustic
   :mode
   ("\\.rs\\'" . rustic-mode)
-  :custom
-  (rustic-lsp-client 'eglot))
+  :hook
+  (rustic-mode . eglot-ensure))
 
 (provide 'rust-lang)

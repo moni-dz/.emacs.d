@@ -86,22 +86,12 @@
         (delq (current-buffer)
               (remove-if-not 'buffer-file-name (buffer-list)))))
 
-(global-set-key (kbd "C-c k") #'kill-other-buffers)
-(global-set-key (kbd "C-c C-k") #'kill-buffer-and-window)
+(global-set-key (kbd "C-c C-k") #'kill-other-buffers)
+(global-set-key (kbd "C-c k") #'kill-buffer-and-window)
 
-(setq god-mode-enable-function-key-translation nil)
-
-(pkg! god-mode
+(pkg! evil
   :hook
-  ((emacs-startup . god-mode)
-   (god-mode-enabled . (lambda () (setq cursor-type 'box)))
-   (god-mode-disabled . (lambda () (setq cursor-type 'bar))))
-  :bind
-  (("<escape>" . god-mode-all)
-   (:map god-local-mode-map ("i" . god-local-mode)))
-  :custom
-  (god-exempt-major-modes nil)
-  (god-exempt-predicates nil))
+  (emacs-startup . evil-mode))
 
 (pkg! ctrlf
   :hook
