@@ -1,47 +1,76 @@
 ;;; -*- lexical-binding: t -*-
 
-(pkg! flycheck
-  :hook
-  ((prog-mode . flycheck-mode)
-   ;; Too much false positives, best to be disabled
-   (emacs-lisp-mode . (lambda () (flycheck-mode -1)))))
+(elpaca-leaf direnv
+  :config (direnv-mode))
 
-(pkg! flycheck-popup-tip
+(elpaca-leaf flycheck
+  :hook
+  ((prog-mode-hook . flycheck-mode)
+   (emacs-lisp-mode-hook . (lambda () (flycheck-mode -1))))
+  :custom
+  (flycheck-disabled-checkers . '(emacs-lisp-checkdoc)))
+
+(elpaca-leaf flycheck-popup-tip
   :after flycheck
   :hook
-  (flycheck-mode . flycheck-popup-tip-mode))
+  (flycheck-mode-hook . flycheck-popup-tip-mode))
 
-(pkg! flycheck-posframe
+(elpaca-leaf flycheck-posframe
   :after flycheck
   :hook
-  (flycheck-mode . flycheck-posframe-mode)
+  (flycheck-mode-hook . flycheck-posframe-mode)
   :config
   (flycheck-posframe-configure-pretty-defaults))
 
-(pkg! company
-  :hook
-  (prog-mode . company-mode)
-  :custom
-  (company-idle-delay 0.2)
-  (company-tooltip-limit 14)
-  (company-tooltip-align-annotations t)
-  (company-minimum-prefix-length 1)
-  (company-selection-wrap-around t)
-  (company-backends '(company-capf))
-  (company-format-margin-function nil))
-
-(pkg! eglot
-  :straight (:type git :host github :repo "joaotavora/eglot")
-  :hook
-  (eglot--managed-mode . (lambda () (flymake-mode -1)))
+(elpaca-leaf corfu
+  :after orderless
   :config
-  (add-to-list 'eglot-server-programs '(nim-mode . ("nimlsp"))))
+  (global-corfu-mode)
+  :custom
+  (corfu-auto . t)
+  (corfu-cycle . t))
+ 
+(leaf emacs
+  :config
+  (setq completion-cycle-threshold 3
+        tab-always-indent 'complete))
 
-(require 'c-cxx-lang)
-(require 'nix-lang)
+(elpaca-leaf yasnippet
+  :require t
+  :config
+  (yas-global-mode 1))
+
+(elpaca-leaf cape)
+
+(elpaca-leaf orderless
+  :config
+  (setq completion-styles '(orderless partial-completion basic)
+        completion-category-defaults nil
+        completion-category-overrides nil))
+
+(elpaca-leaf lsp-mode
+  :after orderless cape corfu
+  :config
+  (defun prog/orderless-dispatch-flex-first (_pattern index _total)
+    (and (eq index 0) 'orderless-flex))
+  
+  (defun prog/lsp-setup-compl ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults)
+                     '(orderless))))
+
+  (add-hook 'orderless-style-dispatchers #'prog/orderless-dispatch-flex-first nil 'local)
+
+  (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point)))
+  :init
+  (setq lsp-completion-provider :none
+        lsp-headerline-breadcrumb-enable nil
+        lsp-modeline-diagnostics-enable nil
+        lsp-modeline-code-actions-enable nil)
+  :hook
+  (lsp-completion-mode-hook . prog/lsp-setup-compl))
+
 (require 'org-lang)
-(require 'rust-lang)
-(require 'elisp-lang)
-(require 'nim-lang)
+(require 'zig-lang)
+(require 'r-lang)
 
 (provide 'programming)

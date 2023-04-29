@@ -1,17 +1,12 @@
-;;; early-init.el --- Package management -*- lexical-binding: t; -*-
-;;; Commentary:
-;;; We use `straight.el' for package management, and early frame modifications
-;;; Code:
-
 (tooltip-mode -1)
 
 ;; Early frame modifications
 (add-to-list 'default-frame-alist '(menu-bar-lines . 0))
 (add-to-list 'default-frame-alist '(tool-bar-lines . 0))
-(add-to-list 'default-frame-alist '(font . "Iosevka FT-10.5"))
+(add-to-list 'default-frame-alist '(font . "Comic Code Ligatures-13"))
 (add-to-list 'default-frame-alist '(vertical-scroll-bars))
 
-;; In the unlikely case you use NeXTStep
+;; In the unlikely case you use macOS
 (when (featurep 'ns)
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t)))
 
@@ -26,71 +21,81 @@
               inhibit-startup-echo-area-message t
               initial-scratch-message nil
               package-enable-at-startup nil
-              straight-cache-autoloads t
-              straight-check-for-modifications '(check-on-save find-when-checking)
-              straight-repository-branch "develop"
               vc-handled-backends nil
               fringes-outside-margins t)
 
-(defvar bootstrap-version)
+(defvar elpaca-installer-version 0.3)
+(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+                              :ref nil
+                              :files (:defaults (:exclude "extensions"))
+                              :build (:not elpaca--activate-package)))
+(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+       (build (expand-file-name "elpaca/" elpaca-builds-directory))
+       (order (cdr elpaca-order))
+       (default-directory repo))
+  (add-to-list 'load-path (if (file-exists-p build) build repo))
+  (unless (file-exists-p repo)
+    (make-directory repo t)
+    (condition-case-unless-debug err
+        (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                 ((zerop (call-process "git" nil buffer t "clone"
+                                       (plist-get order :repo) repo)))
+                 ((zerop (call-process "git" nil buffer t "checkout"
+                                       (or (plist-get order :ref) "--"))))
+                 (emacs (concat invocation-directory invocation-name))
+                 ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                       "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                 ((require 'elpaca))
+                 ((elpaca-generate-autoloads "elpaca" repo)))
+            (kill-buffer buffer)
+          (error "%s" (with-current-buffer buffer (buffer-string))))
+      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+  (unless (require 'elpaca-autoloads nil t)
+    (require 'elpaca)
+    (elpaca-generate-autoloads "elpaca" repo)
+    (load "./elpaca-autoloads")))
+(add-hook 'after-init-hook #'elpaca-process-queues)
+(elpaca `(,@elpaca-order))
 
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+(elpaca leaf)
+(elpaca-wait)
 
-(straight-use-package 'use-package)
+;;;###autoload
+(defmacro elpaca-leaf (order &rest body)
+  "Execute BODY in `leaf' declaration after ORDER is finished.
+If the :disabled keyword is present in body, the package is completely ignored.
+This happens regardless of the value associated with :disabled.
+The expansion is a string indicating the package has been disabled."
+  (declare (indent 1))
+  (if (memq :disabled body)
+      (format "%S :disabled by elpaca-leaf" order)
+    (let ((o order))
+      (when-let ((ensure (cl-position :ensure body)))
+        (setq o (if (null (nth (1+ ensure) body)) nil order)
+              body (append (cl-subseq body 0 ensure)
+                           (cl-subseq body (+ ensure 2)))))
+      `(elpaca ,o (leaf
+                    ,(if-let (((memq (car-safe order) '(quote \`)))
+                              (feature (flatten-tree order)))
+                         (cadr feature)
+                       (elpaca--first order))
+                    ,@body)))))
 
-(setq-default straight-use-package-by-default t
-              use-package-always-ensure nil
-              use-package-always-defer t)
+(elpaca-leaf no-littering
+  :leaf-defer nil
+  :require t)
 
-(defvar pkg!-installed '(straight use-package)
-  "List of installed packages.")
-
-(defconst pkg!-font-lock-keywords
-  '(("(\\(pkg!\\)\\_>[ \t']*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
-     (1 font-lock-keyword-face)
-     (2 font-lock-constant-face nil t))))
-
-(font-lock-add-keywords 'emacs-lisp-mode pkg!-font-lock-keywords)
-
-(defmacro pkg! (name &rest args)
-  "`use-package' macro that increments `pkg!-installed'.
-With the added bonus that it's also shorter and less cumbersome."
-  (declare (indent defun))
-  (add-to-list 'pkg!-installed name)
-  `(use-package ,name
-     ,@args))
-
-(defun straight-x-clean-unused-repos ()
-  "Clean module repos that are unused."
-  (interactive)
-  (dolist (repo (straight--directory-files (straight--repos-dir)))
-    (unless (or (straight--checkhash repo straight--repo-cache)
-                (not (y-or-n-p (format "Delete repository %S?" repo))))
-      (delete-directory (straight--repos-dir repo) 'recursive 'trash))))
-
-(pkg! no-littering
-  :demand t
-  :config
-  (require 'no-littering))
-
-(pkg! exec-path-from-shell
-  :if (memq window-system '(mac ns x))
-  :demand t
-  :config
+(elpaca-leaf exec-path-from-shell
+  :leaf-defer nil
+  :init
   (exec-path-from-shell-initialize))
+
+(elpaca-wait)
 
 (add-to-list 'load-path (concat user-emacs-directory "elisp"))
 (add-to-list 'load-path (concat user-emacs-directory "elisp/lang"))
 
 (setq-default flycheck-emacs-lisp-load-path load-path)
-;;; early-init.el ends here

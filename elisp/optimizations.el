@@ -40,24 +40,21 @@
                                  temp-file-name-handler-alist))))
     (add-hook 'emacs-startup-hook #'reset-file-handler-alist-h)))
 
-;; F5 cancels anything
-(global-set-key (kbd "<f5>") #'keyboard-escape-quit)
-
 ;; Fundamental Mode is the simplest mode
 (setq initial-major-mode 'fundamental-mode)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Use the Garbage Collector Magic Hack
-(pkg! gcmh
+(elpaca-leaf gcmh
   :hook
-  ((emacs-startup . gcmh-mode)
-   (focus-out . gcmh-idle-garbage-collect))
+  ((emacs-startup-hook . gcmh-mode)
+   (focus-out-hook . gcmh-idle-garbage-collect))
   :custom
-  (gcmh-verbose nil)
-  (gcmh-idle-delay 6)
-  (gcmh-high-cons-threshold 16777216))
+  (gcmh-verbose . nil)
+  (gcmh-idle-delay . 6)
+  (gcmh-high-cons-threshold . 16777216))
 
 ;; Show only errors, not warnings
 (setq-default warning-minimum-level :error)
 
-(provide 'optimization)
+(provide 'optimizations)

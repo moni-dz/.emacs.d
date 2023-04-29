@@ -16,55 +16,66 @@
               auto-window-vscroll nil
               require-final-newline t
               indent-tabs-mode nil
-              tab-width 2)
+              tab-width 2
+              mac-redisplay-dont-reset-vscroll t
+              mac-mouse-wheel-smooth-scroll nil
+              ns-use-native-fullscreen nil
+              ns-pop-up-frames nil
+              ns-command-modifier 'meta)
 
 (add-hook 'emacs-startup-hook #'global-visual-line-mode)
 
-(pkg! unicode-fonts
-  :hook
-  (emacs-startup . unicode-fonts-setup))
+(elpaca-leaf osx-trash
+  :if (eq system-type 'darwin)
+  :commands osx-trash-move-file-to-trash
+  :config
+  (setq delete-by-moving-to-trash t)
 
-(pkg! format-all
+  (when (not (fboundp 'system-move-file-to-trash))
+    (defun system-move-file-to-trash (file)
+      "Move FILE to trash."
+      (when (and (not (eq system-type 'gnu/linux))
+                 (not (file-remote-p default-directory)))
+        (osx-trash-move-file-to-trash file)))))
+
+(elpaca-leaf unicode-fonts
+  :hook
+  (emacs-startup-hook . unicode-fonts-setup))
+
+(elpaca-leaf format-all
   :commands format-all-buffer
   :hook
-  (prog-mode . format-all-ensure-formatter))
+  (prog-mode-hook . format-all-ensure-formatter))
 
-(pkg! paren
-  :hook
-  (prog-mode . show-paren-mode))
+(add-hook 'prog-mode-hook #'show-paren-mode)
 
-(pkg! hl-line
+(leaf hl-line
   :hook
-  ((prog-mode org-mode text-mode conf-mode) . hl-line-mode))
+  ((prog-mode-hook org-mode-hook text-mode-hook conf-mode-hook) . hl-line-mode))
 
-(pkg! autorevert
+(leaf autorevert
   :hook
-  (emacs-startup . global-auto-revert-mode))
+  (emacs-startup-hook . global-auto-revert-mode))
 
-(pkg! super-save
+(elpaca-leaf super-save
   :hook
-  (emacs-startup . super-save-mode)
+  (emacs-startup-hook . super-save-mode)
+  :init
+  (setq auto-save-default nil)
   :custom
-  (super-save-auto-save-when-idle t))
+  (super-save-auto-save-when-idle . t))
 
-(pkg! beacon
+(elpaca-leaf smartparens
+  :require t
   :hook
-  (focus-in . beacon-blink)
-  :config
-  (beacon-mode))
+  (prog-mode-hook . smartparens-mode))
 
-(pkg! smartparens
-  :config
-  (require 'smartparens-config)
-  :hook
-  (prog-mode . smartparens-mode))
-
-(pkg! hl-todo
-  :hook (prog-mode . hl-todo-mode)
+(elpaca-leaf hl-todo
+  :hook (prog-mode-hook . hl-todo-mode)
   :custom
-  (hl-todo-highlight-punctuation ":")
-  (hl-todo-keyword-faces
-   `(("TODO" warning bold)
+  (hl-todo-highlight-punctuation . ":")
+  (hl-todo-keyword-faces .
+    `(("TODO" warning bold)
      ("FIXME" error bold)
      ("HACK" font-lock-constant-face bold)
      ("REVIEW" font-lock-keyword-face bold)
@@ -73,9 +84,9 @@
      ("BUG" error bold)
      ("XXX" font-lock-constant-face bold))))
 
-(pkg! highlight-indent-guides
+(elpaca-leaf highlight-indent-guides
   :hook
-  (prog-mode . highlight-indent-guides-mode)
+  (prog-mode-hook . highlight-indent-guides-mode)
   :custom
   (highlight-indent-guides-method 'character))
 
@@ -89,12 +100,12 @@
 (global-set-key (kbd "C-c C-k") #'kill-other-buffers)
 (global-set-key (kbd "C-c k") #'kill-buffer-and-window)
 
-(pkg! evil
-  :hook
-  (emacs-startup . evil-mode))
+(elpaca-leaf evil
+  :require t
+  :config (evil-mode 1))
 
-(pkg! ctrlf
+(elpaca-leaf ctrlf
   :hook
-  (emacs-startup . ctrlf-mode))
+  (emacs-startup-hook . ctrlf-mode))
 
 (provide 'editor)

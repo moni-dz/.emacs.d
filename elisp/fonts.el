@@ -1,48 +1,45 @@
 ;;; -*- lexical-binding: t -*-
 
-(defconst fonts/variable-pitch
-  "Sarasa Gothic J"
-  "Default variable width font")
+(elpaca-leaf fontaine
+  :require t
+  :hook (modus-themes-after-load-theme-hook . fontaine-apply-current-preset)
+  :config
+  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
+  :custom
+  (fontaine-presets . '((tiny :default-height 90)
+                        (small :default-height 110)
+                        (regular :default-height 130)
+                        (medium :default-height 150)
+                        (large :default-height 190)
+                        (presentation :default-height 210)
+                        (jumbo :default-height 230)
+                        (t
+                         :default-family "Comic Code Ligatures"
+                         :default-weight regular
+                         :default-height 130
+                         :fixed-pitch-family nil
+                         :fixed-pitch-weight nil
+                         :fixed-pitch-height 1.0
+                         :fixed-pitch-serif-family "Comic Sans MS"
+                         :fixed-pitch-serif-weight nil
+                         :fixed-pitch-serif-height 1.4
+                         :variable-pitch-family "Comic Sans MS"
+                         :variable-pitch-height 1.4
+                         :bold-family nil
+                         :bold-weight bold
+                         :italic-family nil
+                         :italic-slant italic
+                         :line-spacing-nil))))
 
-(defun fonts/set-fonts ()
-  (set-face-attribute 'fixed-pitch-serif nil :family fonts/variable-pitch)
-  (set-face-attribute 'variable-pitch nil :family fonts/variable-pitch))
-
-(defun fonts/enable-ligatures ()
-  "Define general ligatures and load them with HarfBuzz."
-  (let ((alist  '((?!  . "\\(?:!\\(?:==\\|[!=]\\)\\)")                                      ; (regexp-opt '("!!" "!=" "!=="))
-                  (?#  . "\\(?:#\\(?:###?\\|_(\\|[#(:=?[_{]\\)\\)")                         ; (regexp-opt '("##" "###" "####" "#(" "#:" "#=" "#?" "#[" "#_" "#_(" "#{"))
-                  (?$  . "\\(?:\\$>>?\\)")                                                  ; (regexp-opt '("$>" "$>>"))
-                  (?%  . "\\(?:%%%?\\)")                                                    ; (regexp-opt '("%%" "%%%"))
-                  (?&  . "\\(?:&&&?\\)")                                                    ; (regexp-opt '("&&" "&&&"))
-                  (?*  . "\\(?:\\*\\(?:\\*[*/]\\|[)*/>]\\)?\\)")                            ; (regexp-opt '("*" "**" "***" "**/" "*/" "*>" "*)"))
-                  (?+  . "\\(?:\\+\\(?:\\+\\+\\|[+:>]\\)?\\)")                              ; (regexp-opt '("+" "++" "+++" "+>" "+:"))
-                  (?-  . "\\(?:-\\(?:-\\(?:->\\|[>-]\\)\\|<[<-]\\|>[>-]\\|[:<>|}~-]\\)\\)") ; (regexp-opt '("--" "---" "-->" "--->" "->-" "-<" "-<-" "-<<" "->" "->>" "-}" "-~" "-:" "-|"))
-                  (?.  . "\\(?:\\.\\(?:\\.[.<]\\|[.=>-]\\)\\)")                             ; (regexp-opt '(".-" ".." "..." "..<" ".=" ".>"))
-                  (?/  . "\\(?:/\\(?:\\*\\*\\|//\\|==\\|[*/=>]\\)\\)")                      ; (regexp-opt '("/*" "/**" "//" "///" "/=" "/==" "/>"))
-                  (?:  . "\\(?::\\(?:::\\|[+:<=>]\\)?\\)")                                  ; (regexp-opt '(":" "::" ":::" ":=" ":<" ":=" ":>" ":+"))
-                  (?\; . ";;")                                                              ; (regexp-opt '(";;"))
-                  (?0  . "0\\(?:\\(x[a-fA-F0-9]\\).?\\)") ; Tries to match the x in 0xDEADBEEF
-                  ;; (?x . "x") ; Also tries to match the x in 0xDEADBEEF
-                  ;; (regexp-opt '("<!--" "<$" "<$>" "<*" "<*>" "<**>" "<+" "<+>" "<-" "<--" "<---" "<->" "<-->" "<--->" "</" "</>" "<<" "<<-" "<<<" "<<=" "<=" "<=<" "<==" "<=>" "<===>" "<>" "<|" "<|>" "<~" "<~~" "<." "<.>" "<..>"))
-                  (?<  . "\\(?:<\\(?:!--\\|\\$>\\|\\*\\(?:\\*?>\\)\\|\\+>\\|-\\(?:-\\(?:->\\|[>-]\\)\\|[>-]\\)\\|\\.\\(?:\\.?>\\)\\|/>\\|<[<=-]\\|=\\(?:==>\\|[<=>]\\)\\||>\\|~~\\|[$*+./<=>|~-]\\)\\)")
-                  (?=  . "\\(?:=\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\|[=>]\\)\\)")               ; (regexp-opt '("=/=" "=:=" "=<<" "==" "===" "==>" "=>" "=>>"))
-                  (?>  . "\\(?:>\\(?:->\\|=>\\|>[=>-]\\|[:=>-]\\)\\)")                      ; (regexp-opt '(">-" ">->" ">:" ">=" ">=>" ">>" ">>-" ">>=" ">>>"))
-                  (??  . "\\(?:\\?[.:=?]\\)")                                               ; (regexp-opt '("??" "?." "?:" "?="))
-                  (?\[ . "\\(?:\\[\\(?:|]\\|[]|]\\)\\)")                                    ; (regexp-opt '("[]" "[|]" "[|"))
-                  (?\\ . "\\(?:\\\\\\\\[\\n]?\\)")                                          ; (regexp-opt '("\\\\" "\\\\\\" "\\\\n"))
-                  (?^  . "\\(?:\\^==?\\)")                                                  ; (regexp-opt '("^=" "^=="))
-                  (?w  . "\\(?:wwww?\\)")                                                   ; (regexp-opt '("www" "wwww"))
-                  (?{  . "\\(?:{\\(?:|\\(?:|}\\|[|}]\\)\\|[|-]\\)\\)")                      ; (regexp-opt '("{-" "{|" "{||" "{|}" "{||}"))
-                  (?|  . "\\(?:|\\(?:->\\|=>\\||=\\|[]=>|}-]\\)\\)")                        ; (regexp-opt '("|=" "|>" "||" "||=" "|->" "|=>" "|]" "|}" "|-"))
-                  (?_  . "\\(?:_\\(?:|?_\\)\\)")                                            ; (regexp-opt '("_|_" "__"))
-                  (?\( . "\\(?:(\\*\\)")                                                    ; (regexp-opt '("(*"))
-                  (?~  . "\\(?:~\\(?:~>\\|[=>@~-]\\)\\)"))))                                  ; (regexp-opt '("~-" "~=" "~>" "~@" "~~" "~~>"))
-    (dolist (char-regexp alist)
-      (set-char-table-range composition-function-table (car char-regexp)
-                            `([,(cdr char-regexp) 0 font-shape-gstring])))))
-
-(add-hook 'emacs-startup-hook #'fonts/set-fonts)
-(add-hook 'after-change-major-mode-hook #'fonts/enable-ligatures)
+(elpaca-leaf ligature
+  :config
+  ;; Enable all Iosevka ligatures in programming modes
+  (ligature-set-ligatures 'prog-mode '("<---" "<--"  "<<-" "<-" "->" "-->" "--->" "<->" "<-->" "<--->" "<---->" "<!--"
+                                       "<==" "<===" "<=" "=>" "=>>" "==>" "===>" ">=" "<=>" "<==>" "<===>" "<====>" "<!---"
+                                       "<~~" "<~" "~>" "~~>" "::" ":::" "==" "!=" "===" "!=="
+                                       ":=" ":-" ":+" "<*" "<*>" "*>" "<|" "<|>" "|>" "+:" "-:" "=:" "<******>" "++" "+++"))
+  ;; Enables ligature checks globally in all buffers. You can also do it
+  ;; per mode with `ligature-mode'.
+  (global-ligature-mode t))
 
 (provide 'fonts)

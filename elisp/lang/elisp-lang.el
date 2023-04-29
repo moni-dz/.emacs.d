@@ -1,33 +1,18 @@
 ;;; -*- lexical-binding: t -*-
 
-;; ELisp/l looks odd
-(add-hook
- 'emacs-lisp-mode-hook
- (lambda () (setq mode-name "Emacs Lisp")))
+(elpaca-leaf highlight-quoted
+  :hook (emacs-lisp-mode-hook . highlight-quoted-mode))
 
-(pkg! highlight-quoted
-  :hook
-  (emacs-lisp-mode . highlight-quoted-mode))
+(elpaca-leaf highlight-defined
+  :hook (emacs-lisp-mode-hook . highlight-defined-mode))
 
-(pkg! highlight-defined
-  :hook
-  (emacs-lisp-mode . highlight-defined-mode))
+(elpaca-leaf elisp-def
+  :hook ((emacs-lisp-mode-hook ielm-mode-hook) . elisp-def-mode))
 
-(pkg! elisp-def
-  :hook
-  ((emacs-lisp-mode ielm-mode) . elisp-def-mode))
+(elpaca-leaf lisp-butt-mode
+  :hook (emacs-lisp-mode-hook . lisp-butt-mode))
 
-(pkg! lisp-butt-mode
-  :hook
-  (emacs-lisp-mode . lisp-butt-mode))
-
-(pkg! parinfer-rust-mode
-  :hook emacs-lisp-mode
-  :init
-  (setq parinfer-rust-auto-download t))
-
-(pkg! aggressive-indent
-  :hook
-  (emacs-lisp-mode . aggressive-indent-mode))
+(elpaca-leaf aggressive-indent
+  :hook (emacs-lisp-mode-hook . aggressive-indent-mode))
 
 (provide 'elisp-lang)

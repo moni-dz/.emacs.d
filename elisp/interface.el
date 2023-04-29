@@ -1,155 +1,139 @@
 ;;; -*- lexical-binding: t -*-
 
-(pkg! hide-mode-line
-  :hook
-  ((comint-mode helpful-mode help-mode) . hide-mode-line-mode))
+(setq-default modus-themes-mixed-fonts t)
 
-(pkg! conceal
-  :straight
-  (:type git :host github :repo "lepisma/conceal"))
+(defun interface/dynamic-theme (mode)
+  "Load theme, depending on MODE."
+  (mapc #'disable-theme custom-enabled-themes)
+  (pcase mode
+    ('light (load-theme 'modus-operandi-tinted t))
+    ('dark (load-theme 'modus-vivendi-tinted t))))
 
-(pkg! selectrum
-  :hook
-  (emacs-startup . selectrum-mode))
+(if (eq system-type 'darwin)
+    (add-hook 'ns-system-appearance-change-functions #'interface/dynamic-theme)
+  (load-theme 'modus-operandi-tinted t))
 
-(pkg! prescient
-  :hook
-  (emacs-startup . prescient-persist-mode))
+(let ((header-line-enabled t))
+  (defun interface/toggle-header-line ()
+    "Toggle header line"
+    (interactive)
+    
+    (if header-line-enabled
+        (setq header-line-format nil)
+      (setq header-line-format '(:eval simple-modeline--mode-line)))  
 
-(pkg! selectrum-prescient
-  :hook
-  (emacs-startup . selectrum-prescient-mode))
+    (setq header-line-enabled (not header-line-enabled))))
 
-(pkg! helpful
+(dolist (hook '(comint-mode-hook helpful-mode-hook help-mode-hook))
+  (add-hook hook #'interface/toggle-header-line))
+
+(elpaca-leaf (conceal :host github :repo "lepisma/conceal"))
+
+(elpaca-leaf blackout
+  :config
+  (blackout 'emacs-lisp-mode "Emacs Lisp"))
+
+(elpaca-leaf simple-modeline
+  :after blackout
+  :require t
+  :init (setq-default mode-line-format nil)
+  :config
+  (setq-default header-line-format '(:eval simple-modeline--mode-line))
+
+  (defun blackout-minor-modes ()
+    (blackout 'gcmh-mode)
+    (blackout 'visual-line-mode)
+    (blackout 'highlight-indent-guides-mode)
+    (blackout 'yas-minor-mode)
+    (blackout 'smartparens-mode)
+    (blackout 'eldoc-mode)
+    (blackout 'super-save-mode)
+    (blackout 'which-key-mode)
+    (blackout 'buffer-face-mode)
+    (blackout 'word-wrap-whitespace-mode)
+    (blackout 'page-break-lines-mode))
+
+  (add-hook 'window-setup-hook #'blackout-minor-modes)
+  (add-hook 'after-change-major-mode-hook #'blackout-minor-modes))
+
+(elpaca-leaf (conceal :host github :repo "lepisma/conceal"))
+(elpaca-leaf vertico :config (vertico-mode))
+(leaf savehist :config (savehist-mode))
+
+(leaf emacs
+  :init
+  ;; Add prompt indicator to `completing-read-multiple'.
+  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+  (defun crm-indicator (args)
+    (cons (format "[CRM%s] %s"
+                  (replace-regexp-in-string
+                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                   crm-separator)
+                  (car args))
+          (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+  ;; Do not allow the cursor in the minibuffer prompt
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+  ;; Vertico commands are hidden in normal buffers.
+  ;; (setq read-extended-command-predicate
+  ;;       #'command-completion-default-include-p)
+
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t))
+
+(elpaca-leaf helpful
   :bind
   (("C-h f" . helpful-callable)
    ("C-h v" . helpful-variable)
    ("C-h k" . helpful-key))
-  :config
-  (custom-theme-set-faces
-   'user
-   '(helpful-heading ((t (:inherit variable-pitch))))))
+  :custom-face (helpful-heading . '((t (:inherit variable-pitch)))))
 
-(pkg! centaur-tabs
+(elpaca-leaf solaire-mode
   :hook
-  ((dashboard-mode dired-mode) . centaur-tabs-local-mode)
-  :config
-  (centaur-tabs-mode +1)
+  ((change-major-mode-hook . turn-on-solaire-mode)
+   (after-revert-hook . turn-on-solaire-mode)
+   (ediff-prepare-buffer-hook . solaire-mode))
   :custom
-  (centaur-tabs-style "bar")
-  (centaur-tabs-set-bar 'under)
-  (x-underline-at-descent-line t))
-
-(pkg! solaire-mode
-  :hook
-  ((change-major-mode . turn-on-solaire-mode)
-   (after-revert . turn-on-solaire-mode)
-   (ediff-prepare-buffer . solaire-mode))
-  :custom
-  (solaire-mode-auto-swap-bg nil)
+  (solaire-mode-auto-swap-bg . nil)
   :config
   (solaire-global-mode +1))
 
-(pkg! doom-themes
-  :after solaire-mode
-  :hook
-  (emacs-startup . (lambda () (load-theme 'doom-horizon t)))
-  :config
-  (doom-themes-visual-bell-config)
-  (doom-themes-org-config)
+(elpaca-leaf olivetti
+  :after fontaine
   :custom
-  (doom-themes-enable-bold t)
-  (doom-themes-enable-italic t))
+  (olivetti-body-width . 0.7)
+  (olivetti-minimum-body-width . 80)
+  (olivetti-recall-visual-line-mode-entry-state . t))
 
-(pkg! doom-modeline
-  :hook
-  (emacs-startup . doom-modeline-mode)
+(leaf display-line-numbers
+  :hook ((prog-mode-hook org-mode-hook) . display-line-numbers-mode)
   :custom
-  (doom-modeline-height 20)
-  (doom-modeline-bar-width 4)
-  (doom-modeline-icon nil)
-  (doom-modeline-enable-word-count t)
-  (doom-modeline-indent-info t))
-
-(pkg! olivetti
-  :custom
-  (olivetti-body-width 140))
-
-(pkg! display-line-numbers
-  :hook
-  ((prog-mode org-mode) . display-line-numbers-mode)
-  :custom
-  (display-line-numbers-width 3)
-  (display-line-numbers-widen t))
+  (display-line-numbers-width . 3)
+  (display-line-numbers-widen . t))
 
 (defun interface/toggle-zen-mode ()
   "Toggle a distraction-free environment for writing."
   (interactive)
 
-  (defface regular-face
-  	'((nil :family "Iosevka FT" :height 105))
-    "Regular face")
-
-  (defface zen-mode-face
-  	'((nil :family "Iosevka FT" :height 120))
-    "Zen mode face")
-
   (cond ((bound-and-true-p olivetti-mode)
+         (fontaine-set-preset 'regular)
          (olivetti-mode -1)
-         (centaur-tabs-local-mode -1)
          (display-line-numbers-mode +1)
-         (buffer-face-set 'regular-face))
+         (setq header-line-format '(:eval simple-modeline--mode-line)))
         (t
+         (fontaine-set-preset 'large)
          (olivetti-mode +1)
-         (centaur-tabs-local-mode +1)
          (display-line-numbers-mode -1)
-         (buffer-face-set 'zen-mode-face))))
+         (setq header-line-format nil))))
 
 (global-set-key (kbd "C-x z") 'interface/toggle-zen-mode)
 
-(pkg! which-key
-  :hook
-  (emacs-startup . which-key-mode)
-  :config
-  (which-key-enable-god-mode-support))
-
-(pkg! page-break-lines
-  :hook
-  (emacs-startup . global-page-break-lines-mode))
-
-(pkg! dashboard
-  :preface
-  (defun dashboard-init-info-with-gcs ()
-    "Set a dashboard banner including information on package initialization
-  time and garbage collections."
-    (setq dashboard-init-info
-          (format "Ready in %s with %d packages loaded and %d garbage collections."
-                  (emacs-init-time) (length pkg!-installed) gcs-done)))
-  :hook
-  ((after-init . dashboard-setup-startup-hook)
-   (emacs-startup . dashboard-refresh-buffer)
-   (dashboard-mode . dashboard-init-info-with-gcs))
-  :custom
-  (dashboard-startup-banner
-   (concat user-emacs-directory "assets/slark.png"))
-  (dashboard-banner-logo-title "everyone's favorite lisp interpreter")
-  (dashboard-center-content t)
-  (dashboard-footer-icon "")
-  (dashboard-footer-messages
-   '("When I say a thing, you know it's true. So I'm calling it right here and now. This one's in the bag!"))
-  (dashboard-items '((recents . 4)))
-  (dashboard-show-shortcuts nil)
-  (dashboard-set-navigator t)
-  (dashboard-navigator-buttons
-   `(((,""
-       "GitHub"
-       "Go to GitHub page of this Emacs configuration"
-       (lambda (&rest _) (browse-url "https://github.com/fortuneteller2k/.emacs.d"))
-       font-lock-warning-face)
-      (""
-       "Update"
-       "Update packages using `straight-pull-all'"
-       (lambda (&rest _) (straight-pull-all))
-       error)))))
+(elpaca-leaf which-key :hook (emacs-startup-hook . which-key-mode))
+(elpaca-leaf page-break-lines :hook (emacs-startup-hook . global-page-break-lines-mode))
 
 (provide 'interface)
