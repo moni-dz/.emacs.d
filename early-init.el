@@ -1,5 +1,9 @@
 (tooltip-mode -1)
 
+;; no bottom modeline
+(setq mode-line-format nil)
+(setq-default mode-line-format nil)
+
 ;; Early frame modifications
 (add-to-list 'default-frame-alist '(menu-bar-lines . 0))
 (add-to-list 'default-frame-alist '(tool-bar-lines . 0))

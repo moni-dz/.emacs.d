@@ -3,7 +3,7 @@
 (setq-default modus-themes-mixed-fonts t)
 
 (defun interface/dynamic-theme (mode)
-  "Load theme, depending on MODE."
+  "Load theme, depending on MODE. (only for macOS)"
   (mapc #'disable-theme custom-enabled-themes)
   (pcase mode
     ('light (load-theme 'modus-operandi-tinted t))
@@ -36,7 +36,6 @@
 (elpaca-leaf simple-modeline
   :after blackout
   :require t
-  :init (setq-default mode-line-format nil)
   :config
   (setq-default header-line-format '(:eval simple-modeline--mode-line))
 
@@ -135,5 +134,35 @@
 
 (elpaca-leaf which-key :hook (emacs-startup-hook . which-key-mode))
 (elpaca-leaf page-break-lines :hook (emacs-startup-hook . global-page-break-lines-mode))
+
+(defun interface/splash ()
+  "Make a splash!"
+  
+	(let ((buf (get-buffer-create "*moni*")))
+		(with-current-buffer buf
+		  (let ((inhibit-read-only t))
+			  (erase-buffer)
+
+        (setq-local header-line-format nil
+                    cursor-type nil ; this doesn't get set wtf
+                    vertical-scroll-bar nil
+                    horizontal-scroll-bar nil)
+
+			  (make-local-variable 'startup-screen-inhibit-startup-screen)
+
+        (let ((splash-text "hey")
+              (startup-time-text (format "Emacs started in %s." (emacs-init-time))))
+
+          (insert-char ?\n 7)
+			    (insert (propertize " " 'display `(space :align-to (+ center (-0.5 . ,(length splash-text))))))
+			    (insert splash-text)
+          (insert-char ?\n 7)
+			    (insert (propertize " " 'display `(space :align-to (+ center (-0.5 . ,(length startup-time-text))))))
+          (insert startup-time-text)))
+      
+		  (setq buffer-read-only t))
+    (switch-to-buffer buf)))
+
+(add-hook 'window-setup-hook #'interface/splash)
 
 (provide 'interface)
