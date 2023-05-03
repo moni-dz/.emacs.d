@@ -4,7 +4,7 @@
   :require t
   :hook (modus-themes-after-load-theme-hook . fontaine-apply-current-preset)
   :config
-  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
+  (fontaine-set-preset 'regular)
   :custom
   (fontaine-presets . '((tiny :default-height 90)
                         (small :default-height 110)
@@ -15,7 +15,7 @@
                         (jumbo :default-height 230)
                         (t
                          :default-family "Comic Code Ligatures"
-                         :default-weight regular
+                         :default-weight medium
                          :default-height 130
                          :fixed-pitch-family nil
                          :fixed-pitch-weight nil
@@ -35,9 +35,9 @@
   :config
   ;; Enable all Iosevka ligatures in programming modes
   (ligature-set-ligatures 'prog-mode '("<---" "<--"  "<<-" "<-" "->" "-->" "--->" "<->" "<-->" "<--->" "<---->" "<!--"
-                                       "<==" "<===" "<=" "=>" "=>>" "==>" "===>" ">=" "<=>" "<==>" "<===>" "<====>" "<!---"
+                                       "<==" "<===" "<=" "=>" "=>>" "==>" "===>" ">=" "<=>" "<==>" "<===>" "<====>"
                                        "<~~" "<~" "~>" "~~>" "::" ":::" "==" "!=" "===" "!=="
-                                       ":=" ":-" ":+" "<*" "<*>" "*>" "<|" "<|>" "|>" "+:" "-:" "=:" "<******>" "++" "+++"))
+                                       ":=" ":-" ":+" "<*" "<*>" "*>" "<|" "|>" "+:" "-:" "=:" "<******>" "++" "+++"))
   ;; Enables ligature checks globally in all buffers. You can also do it
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))

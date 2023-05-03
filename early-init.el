@@ -9,6 +9,11 @@
 (add-to-list 'default-frame-alist '(tool-bar-lines . 0))
 (add-to-list 'default-frame-alist '(font . "Comic Code Ligatures-13"))
 (add-to-list 'default-frame-alist '(vertical-scroll-bars))
+;; start the initial frame maximized
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+
+;; start every frame maximized
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; In the unlikely case you use macOS
 (when (featurep 'ns)

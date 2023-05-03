@@ -38,37 +38,29 @@
                  (not (file-remote-p default-directory)))
         (osx-trash-move-file-to-trash file)))))
 
-(elpaca-leaf unicode-fonts
-  :hook
-  (emacs-startup-hook . unicode-fonts-setup))
-
 (elpaca-leaf format-all
   :commands format-all-buffer
-  :hook
-  (prog-mode-hook . format-all-ensure-formatter))
+  :hook (prog-mode-hook . format-all-ensure-formatter))
 
 (add-hook 'prog-mode-hook #'show-paren-mode)
 
 (leaf hl-line
-  :hook
-  ((prog-mode-hook org-mode-hook text-mode-hook conf-mode-hook) . hl-line-mode))
+  :hook ((prog-mode-hook org-mode-hook text-mode-hook conf-mode-hook) . hl-line-mode))
+
+(elpaca-leaf rainbow-mode
+  :hook ((prog-mode-hook org-mode-hook text-mode-hook conf-mode-hook) . rainbow-mode))
 
 (leaf autorevert
-  :hook
-  (emacs-startup-hook . global-auto-revert-mode))
+  :hook (emacs-startup-hook . global-auto-revert-mode))
 
 (elpaca-leaf super-save
-  :hook
-  (emacs-startup-hook . super-save-mode)
-  :init
-  (setq auto-save-default nil)
-  :custom
-  (super-save-auto-save-when-idle . t))
+  :hook (emacs-startup-hook . super-save-mode)
+  :init (setq auto-save-default nil)
+  :custom (super-save-auto-save-when-idle . t))
 
 (elpaca-leaf smartparens
   :require t
-  :hook
-  (prog-mode-hook . smartparens-mode))
+  :hook (prog-mode-hook . smartparens-mode))
 
 (elpaca-leaf hl-todo
   :hook (prog-mode-hook . hl-todo-mode)
@@ -85,10 +77,8 @@
      ("XXX" font-lock-constant-face bold))))
 
 (elpaca-leaf highlight-indent-guides
-  :hook
-  (prog-mode-hook . highlight-indent-guides-mode)
-  :custom
-  (highlight-indent-guides-method 'character))
+  :hook (prog-mode-hook . highlight-indent-guides-mode)
+  :custom (highlight-indent-guides-method 'fill))
 
 (defun kill-other-buffers ()
   "Kill all other buffers"
@@ -96,9 +86,6 @@
   (mapc 'kill-buffer
         (delq (current-buffer)
               (remove-if-not 'buffer-file-name (buffer-list)))))
-
-(global-set-key (kbd "C-c C-k") #'kill-other-buffers)
-(global-set-key (kbd "C-c k") #'kill-buffer-and-window)
 
 (elpaca-leaf evil
   :require t

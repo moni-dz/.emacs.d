@@ -3,5 +3,6 @@
 (require 'fonts)
 (require 'interface)
 (require 'programming)
+(require 'keybindings)
 ;;(require 'tools)
 ;;(require 'vanity)
