@@ -2,12 +2,30 @@
 
 (elpaca-leaf direnv :config (direnv-mode))
 
-(elpaca-leaf corfu
-  :after orderless
+(elpaca-leaf (corfu :files (:defaults "extensions/*"))
+  :after (vertico orderless)
+  :hook (corfu-mode-hook . corfu-popupinfo-mode)
   :config (global-corfu-mode)
   :custom
   (corfu-auto . t)
   (corfu-cycle . t))
+
+(defun corfu-enable-always-in-minibuffer ()
+  "Enable Corfu in the minibuffer if Vertico or MCT are not active."
+  (unless (or (bound-and-true-p mct--active)
+              (bound-and-true-p vertico--input)
+              (eq (current-local-map) read-passwd-map))
+    (setq-local corfu-auto t
+                corfu-echo-delay nil
+                corfu-popupinfo-delay nil)
+    (corfu-mode +1)))
+
+(add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer)
+
+(elpaca-leaf kind-icon
+  :after corfu
+  :config (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
+  :custom (kind-icon-default-face .  'corfu-default))
 
 (leaf emacs
   :config

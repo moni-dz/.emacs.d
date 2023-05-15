@@ -8,16 +8,15 @@
   
   (mapc #'disable-theme custom-enabled-themes)
   (pcase mode
-    ('light (load-theme 'ef-frost t))
-    ('dark (load-theme 'ef-winter t))))
+    ('light (load-theme 'ef-light t))
+    ('dark (load-theme 'ef-dark t))))
 
 (elpaca-leaf ef-themes
   :after fontaine
   :hook (ef-themes-post-load-hook . fontaine-apply-current-preset)
   :init
-  (if (eq system-type 'darwin)
-      (dolist (hook '(elpaca-after-init-hook elpaca-ui-mode-hook ns-system-appearance-change-functions))
-        (add-hook hook #'interface/dynamic-theme))
+  (if (eq system-type 'darwin)      
+      (add-hook 'ns-system-appearance-change-functions #'interface/dynamic-theme)
     (dolist (hook '(elpaca-after-init-hook elpaca-ui-mode-hook))
       (add-hook hook (lambda () (load-theme 'ef-winter t))))))
 
@@ -71,7 +70,20 @@
 
 (elpaca-leaf (conceal :host github :repo "lepisma/conceal"))
 
-(elpaca-leaf vertico :config (vertico-mode))
+(elpaca-leaf (vertico :files (:defaults "extensions/*"))
+  :config
+  (advice-add
+   #'vertico--format-candidate :around
+   (lambda (orig cand prefix suffix index _start)
+     (setq cand (funcall orig cand prefix suffix index _start))
+     (concat
+      (if (= vertico--index index)
+          (propertize "→ " 'face 'vertico-current)
+        "  ")
+      cand)))
+  
+  (vertico-mode)
+  (vertico-reverse-mode))
 
 (elpaca-leaf marginalia
   :after vertico
@@ -161,6 +173,8 @@
 
 (elpaca-leaf page-break-lines :hook (emacs-startup-hook . global-page-break-lines-mode))
 
+(defconst interface/show-splash-image nil "Whether to show the splash image or not.")
+
 (defun interface/splash ()
   "Make a splash!"
   
@@ -176,15 +190,18 @@
         (erase-buffer)
 			  (make-local-variable 'startup-screen-inhibit-startup-screen)
 
-        (let ((splash-text "ding fucking won")
-              (splash-image (create-image (expand-file-name "assets/brilliant.png" user-emacs-directory)))
-              (startup-time-text (format "Emacs started in %s." (emacs-init-time))))
+        (let ((splash-text (emacs-version))
+              (splash-image (create-image (expand-file-name "assets/emacs.png" user-emacs-directory)))
+              (startup-time-text (format "Started in %s." (emacs-init-time))))
 
-          (insert-char ?\n 7)
-			    (insert (propertize " " 'display `(space :align-to (+ center (-0.5 . ,splash-image)))))
-          (insert-image splash-image)
+          (if interface/show-splash-image
+              (progn
+                (insert-char ?\n 3)
+			          (insert (propertize " " 'display `(space :align-to (+ center (-0.5 . ,splash-image)))))
+                (insert-image splash-image)
+                (insert-char ?\n 3))
+            (insert-char ?\n 15))
           
-          (insert-char ?\n 3)
 			    (insert (propertize " " 'display `(space :align-to (+ center (-0.5 . ,(length splash-text))))))
 			    (insert splash-text)
           
