@@ -2,41 +2,37 @@
 
 (setq-default modus-themes-mixed-fonts t)
 
-(defun interface/dynamic-theme (mode)
-  "Load theme, depending on MODE. (only for macOS)"
+(defun interface/dynamic-theme ()
+  "Load theme, depending on mode. (only for macOS)"
   (interactive)
-  
+
   (mapc #'disable-theme custom-enabled-themes)
-  (pcase mode
-    ('light (load-theme 'ef-light t))
-    ('dark (load-theme 'ef-dark t))))
 
-(elpaca-leaf ef-themes
+  (let ((mode (plist-get (mac-application-state) :appearance)))
+    (cond ((equal mode "NSAppearanceNameAqua")
+           (load-theme 'doom-one-light t))
+          ((equal mode "NSAppearanceNameDarkAqua")
+           (load-theme 'doom-monokai-pro t)))))
+
+(elpaca-leaf doom-themes
   :after fontaine
-  :hook (ef-themes-post-load-hook . fontaine-apply-current-preset)
   :init
-  (if (eq system-type 'darwin)      
-      (add-hook 'ns-system-appearance-change-functions #'interface/dynamic-theme)
+
+  (if (eq system-type 'darwin)
+      (progn
+        (add-hook 'mac-effective-appearance-change-hook #'interface/dynamic-theme)
+        (dolist (hook '(elpaca-after-init-hook elpaca-ui-mode-hook))
+          (add-hook hook #'interface/dynamic-theme)))
     (dolist (hook '(elpaca-after-init-hook elpaca-ui-mode-hook))
-      (add-hook hook (lambda () (load-theme 'ef-winter t))))))
-
-(let ((header-line-enabled t))
-  (defun interface/toggle-header-line ()
-    "Toggle header line"
-    (interactive)
-    
-    (if header-line-enabled
-        (setq header-line-format nil)
-      (setq header-line-format '(:eval simple-modeline--mode-line)))  
-
-    (setq header-line-enabled (not header-line-enabled))))
-
-(dolist (hook '(comint-mode-hook helpful-mode-hook help-mode-hook))
-  (add-hook hook #'interface/toggle-header-line))
+      (add-hook hook (lambda () (load-theme 'doom-monokai-pro t))))))
 
 (elpaca-leaf (conceal :host github :repo "lepisma/conceal"))
-(elpaca-leaf which-key :hook (emacs-startup-hook . which-key-mode))
+
+(elpaca-leaf (which-key :host github :repo "justbur/emacs-which-key")
+  :hook (emacs-startup-hook . which-key-mode))
+
 (elpaca-leaf keycast)
+(elpaca-leaf (posframe :host github :repo "tumashu/posframe"))
 
 (elpaca-leaf solaire-mode
   :custom (solaire-mode-auto-swap-bg . nil)
@@ -46,11 +42,14 @@
   :config
   (blackout 'emacs-lisp-mode "Emacs Lisp"))
 
-(elpaca-leaf simple-modeline
+(elpaca-leaf doom-modeline
   :after blackout
-  :require t
+  :hook (window-setup-hook . doom-modeline-mode)
+  :custom
+  (doom-modeline-hud . t)
+  (doom-modeline-height . 15)
+  (doom-modeline-icon . nil)
   :config
-  (setq-default header-line-format '(:eval simple-modeline--mode-line))
 
   (defun blackout-minor-modes ()
     (blackout 'gcmh-mode)
@@ -66,9 +65,13 @@
     (blackout 'page-break-lines-mode))
 
   (dolist (hook '(window-setup-hook after-change-major-mode-hook))
-    (add-hook hook #'blackout-minor-modes)))
-
-(elpaca-leaf (conceal :host github :repo "lepisma/conceal"))
+    (add-hook hook #'blackout-minor-modes))
+  :custom-face
+  (doom-modeline . '((t (:family "Comic Neue" :height 1.1))))
+  (doom-modeline-bar . '((t (:family "Comic Neue" :height 1.1))))
+  (doom-modeline-bar-inactive . '((t (:family "Comic Neue" :height 1.1))))
+  (doom-modeline-buffer-path . '((t (:family "Comic Neue" :height 1.1))))
+  (doom-modeline-buffer-major-mode . '((t (:family "Comic Neue" :height 1.1)))))
 
 (elpaca-leaf (vertico :files (:defaults "extensions/*"))
   :config
@@ -81,7 +84,7 @@
           (propertize "→ " 'face 'vertico-current)
         "  ")
       cand)))
-  
+
   (vertico-mode)
   (vertico-reverse-mode))
 
@@ -125,14 +128,15 @@
   (("C-h f" . helpful-callable)
    ("C-h v" . helpful-variable)
    ("C-h k" . helpful-key))
-  :custom-face (helpful-heading . '((t (:inherit variable-pitch)))))
+  :custom-face (helpful-heading . '((t (:inherit "Comic Neue")))))
 
-(elpaca-leaf olivetti
+(elpaca-leaf (olivetti :host github :repo "rnkn/olivetti")
   :after fontaine
   :custom
-  (olivetti-body-width . 0.8)
-  (olivetti-minimum-body-width . 100)
+  (olivetti-body-width . 0.6)
   (olivetti-recall-visual-line-mode-entry-state . t))
+
+(elpaca-leaf hide-mode-line)
 
 (leaf display-line-numbers
   :hook ((prog-mode-hook org-mode-hook) . display-line-numbers-mode)
@@ -146,14 +150,14 @@
 
   (cond ((bound-and-true-p olivetti-mode)
          (olivetti-mode -1)
+         (hide-mode-line-mode -1)
          (fontaine-set-preset 'regular)
-         (display-line-numbers-mode +1)
-         (setq header-line-format '(:eval simple-modeline--mode-line)))
+         (display-line-numbers-mode +1))
         (t
          (olivetti-mode +1)
+         (hide-mode-line-mode +1)
          (fontaine-set-preset 'medium)
-         (display-line-numbers-mode -1)
-         (setq header-line-format nil))))
+         (display-line-numbers-mode -1))))
 
 (defun interface/revert-zen-font-changes (&rest t)
   "Revert normal font size when swapping buffers."
@@ -171,28 +175,31 @@
 
 (global-set-key (kbd "C-x z") #'interface/toggle-zen-mode)
 
-(elpaca-leaf page-break-lines :hook (emacs-startup-hook . global-page-break-lines-mode))
+(elpaca-leaf page-break-lines :hook (window-setup-hook . global-page-break-lines-mode))
 
-(defconst interface/show-splash-image nil "Whether to show the splash image or not.")
+(defconst interface/show-splash-image t "Whether to show the splash image or not.")
 
 (defun interface/splash ()
   "Make a splash!"
-  
+
 	(let ((buf (get-buffer-create "*moni*")))
 		(with-current-buffer buf
-		  (let ((inhibit-read-only t))
+		  (let ((inhibit-read-only t)
+            (header-line-text (replace-regexp-in-string "\n" "" (emacs-version))))
 
-        (setq-local header-line-format nil
-                    cursor-type nil ; this doesn't get set wtf
+        (setq-local cursor-type nil ; this doesn't get set wtf
                     vertical-scroll-bar nil
-                    horizontal-scroll-bar nil)
+                    horizontal-scroll-bar nil
+                    header-line-format (concat (propertize " " 'display `((space :align-to (+ center (-0.5 . , (length header-line-text))))))
+                                               (propertize (concat " " header-line-text " ") 'face 'elpaca-busy)))
 
+        (hide-mode-line-mode +1)
         (erase-buffer)
 			  (make-local-variable 'startup-screen-inhibit-startup-screen)
 
-        (let ((splash-text (emacs-version))
-              (splash-image (create-image (expand-file-name "assets/emacs.png" user-emacs-directory)))
-              (startup-time-text (format "Started in %s." (emacs-init-time))))
+        (let* ((splash-text " fastest blade in the land ")
+               (splash-image (create-image (expand-file-name "assets/bleeding_eyes_moni.png" user-emacs-directory)))
+               (startup-time-text (format " Started in %s with %d garbage collections. " (emacs-init-time) gcs-done)))
 
           (if interface/show-splash-image
               (progn
@@ -201,16 +208,15 @@
                 (insert-image splash-image)
                 (insert-char ?\n 3))
             (insert-char ?\n 15))
-          
-			    (insert (propertize " " 'display `(space :align-to (+ center (-0.5 . ,(length splash-text))))))
-			    (insert splash-text)
-          
+
+			    (insert (propertize " " 'display `(space :align-to (+ center (-0.65 . ,(length splash-text))))))
+			    (insert (propertize splash-text 'face '(:inherit marginalia-modified :family "Comic Neue" :height 2.0)))
+
           (insert-char ?\n 7)
 			    (insert (propertize " " 'display `(space :align-to (+ center (-0.5 . ,(length startup-time-text))))))
-          (insert startup-time-text)))
-      
-		  (setq buffer-read-only t))
-    (switch-to-buffer buf)))
+          (insert (propertize startup-time-text 'face '(:inherit custom-saved :family "Comic Neue" :height 1.5)))))
+      (switch-to-buffer buf)
+      (beginning-of-buffer))))
 
 (add-hook 'window-setup-hook #'interface/splash)
 

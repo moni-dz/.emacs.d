@@ -1,36 +1,42 @@
-;;; -*- lexical-binding: t -*-
+;; -*- lexical-binding: t -*-
 
 (elpaca-leaf direnv :config (direnv-mode))
 
 (elpaca-leaf (corfu :files (:defaults "extensions/*"))
-  :after (vertico orderless)
   :hook (corfu-mode-hook . corfu-popupinfo-mode)
-  :config (global-corfu-mode)
+  :init  
+  (defun corfu-enable-in-minibuffer ()
+    "Enable Corfu in the minibuffer if `completion-at-point' is bound."
+    (when (where-is-internal #'completion-at-point (list (current-local-map)))
+      ;; (setq-local corfu-auto nil) ;; Enable/disable auto completion
+      (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
+                  corfu-popupinfo-delay nil)
+      (corfu-mode 1)))
+  
+  (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
   :custom
   (corfu-auto . t)
-  (corfu-cycle . t))
-
-(defun corfu-enable-always-in-minibuffer ()
-  "Enable Corfu in the minibuffer if Vertico or MCT are not active."
-  (unless (or (bound-and-true-p mct--active)
-              (bound-and-true-p vertico--input)
-              (eq (current-local-map) read-passwd-map))
-    (setq-local corfu-auto t
-                corfu-echo-delay nil
-                corfu-popupinfo-delay nil)
-    (corfu-mode +1)))
-
-(add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer)
+  (corfu-cycle . t)
+  (corfu-popupinfo-delay . '(1.0 . 0.5)))
 
 (elpaca-leaf kind-icon
   :after corfu
   :config (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
-  :custom (kind-icon-default-face .  'corfu-default))
+  :custom (kind-icon-default-face . 'corfu-default))
+
+(elpaca-leaf tree-sitter :require t)
+
+(elpaca-leaf tree-sitter-langs
+  :after tree-sitter
+  :require t
+  :config (global-tree-sitter-mode))
 
 (leaf emacs
   :config
   (setq completion-cycle-threshold 3
-        tab-always-indent 'complete))
+        tab-always-indent 'complete)
+  :custom-face
+  (font-lock-comment-face . '((t (:inherit variable-pitch :height 1.2)))))
 
 (elpaca-leaf yasnippet
   :require t
@@ -44,8 +50,19 @@
         completion-category-defaults nil
         completion-category-overrides nil))
 
-(elpaca-leaf (eglot :host github :repo "joaotavora/eglot")
-  :config (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster))
+;; WTF he did NOT just use lsp-bridge
+(elpaca-leaf (lsp-bridge
+              :host github
+              :repo "manateelazycat/lsp-bridge"
+              :files (:defaults "lsp_bridge.py" "acm/*" "core/*" "langserver/*" "multiserver/*" "resources/*"))
+  :require t
+  :hook (window-setup-hook . global-lsp-bridge-mode)
+  :custom-face
+  (lsp-bridge-alive-mode-line . '((t (:inherit doom-modeline-lsp-running :family "Comic Neue" :height 1.2))))
+  (lsp-bridge-kill-mode-line . '((t (:inherit doom-modeline-lsp-error :family "Comic Neue" :height 1.2)))))
+
+(elpaca-leaf focus)
+(elpaca-leaf string-inflection)
 
 (require 'elisp-lang)
 (require 'org-lang)

@@ -8,9 +8,10 @@
   (general-create-definer leader :prefix "SPC")
   (general-create-definer local-leader :prefix "SPC p")
 
-  (leader 'normal
+  (leader '(normal visual)
     "o" #'find-file
     "z" #'interface/toggle-zen-mode
+    "Z" #'focus-mode
     "k" #'kill-buffer-and-window
     "K" #'kill-other-buffers
     "q q" #'save-buffers-kill-terminal)
@@ -26,11 +27,18 @@
     "h f" #'helpful-callable
     "h k" #'helpful-key)
 
-  (local-leader 'normal flymake-mode-map
-    "d" #'flymake-show-buffer-diagnostics)
+  (local-leader 'normal lsp-bridge-mode-map
+    "d" #'lsp-bridge-diagnostic-list)
   
   (local-leader 'normal ess-r-mode-map
     "e" #'ess-eval-buffer
-    "l" #'ess-eval-line))
+    "l" #'ess-eval-line
+    "s" #'string-inflection-python-style-cycle)
+
+  (local-leader 'normal rust-mode-map
+    "r" #'rust-run
+    "f" #'rust-format-buffer
+    "b" #'rust-compile
+    "s" #'string-inflection-ruby-style-cycle))
 
 (provide 'keybindings)

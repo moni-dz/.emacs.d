@@ -1,23 +1,21 @@
 (tooltip-mode -1)
 
-;; no bottom modeline
-(setq mode-line-format nil)
-(setq-default mode-line-format nil)
-
 ;; Early frame modifications
 (add-to-list 'default-frame-alist '(menu-bar-lines . 0))
 (add-to-list 'default-frame-alist '(tool-bar-lines . 0))
-(add-to-list 'default-frame-alist '(font . "Comic Code Ligatures-13"))
 (add-to-list 'default-frame-alist '(vertical-scroll-bars))
+
 ;; start the initial frame maximized
-(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+;;(add-to-list 'initial-frame-alist '(maximized))
 
 ;; start every frame maximized
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
+;;(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-;; In the unlikely case you use macOS
-(when (featurep 'ns)
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t)))
+;; HACK Work around native compilation on macOS failing with 'ld: library not
+;; found for -lemutls_w'.
+;; https://github.com/d12frosted/homebrew-emacs-plus/issues/554
+(if (eq system-type 'darwin)
+  (setenv "LIBRARY_PATH" "/opt/homebrew/opt/gcc/lib/gcc/13:/opt/homebrew/opt/libgccjit/lib/gcc/13:/opt/homebrew/opt/gcc/lib/gcc/13/gcc/aarch64-apple-darwin22/13"))
 
 (setq-default use-dialog-box nil
               custom-file (if (memq system-type '(gnu/linux darwin)) "/dev/null" "NUL")
@@ -36,7 +34,8 @@
 (defvar elpaca-installer-version 0.4)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(defvar elpaca-repos-directory (expand-file-name "repos/"
+                                                 elpaca-directory))
 (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
                               :ref nil
                               :files (:defaults (:exclude "extensions"))
@@ -107,5 +106,3 @@ The expansion is a string indicating the package has been disabled."
 
 (add-to-list 'load-path (concat user-emacs-directory "elisp"))
 (add-to-list 'load-path (concat user-emacs-directory "elisp/lang"))
-
-(setq-default flycheck-emacs-lisp-load-path load-path)

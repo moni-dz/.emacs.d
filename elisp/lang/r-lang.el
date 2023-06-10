@@ -1,7 +1,6 @@
 ;;; -*- lexical-binding: t; -*-
 
-(elpaca-leaf ess
-  :hook (ess-r-mode-hook . eglot-ensure))
+(elpaca-leaf ess)
 
 (elpaca-leaf poly-R
   :init

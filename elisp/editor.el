@@ -21,7 +21,8 @@
               mac-mouse-wheel-smooth-scroll nil
               ns-use-native-fullscreen nil
               ns-pop-up-frames nil
-              ns-command-modifier 'meta)
+              ns-command-modifier 'meta
+              make-backup-files nil)
 
 (add-hook 'emacs-startup-hook #'global-visual-line-mode)
 
@@ -74,7 +75,7 @@
      ("NOTE" success bold)
      ("DEPRECATED" font-lock-doc-face bold)
      ("BUG" error bold)
-     ("XXX" font-lock-constant-face bold))))
+     ("WTF" font-lock-constant-face bold))))
 
 (elpaca-leaf highlight-indent-guides
   :hook (prog-mode-hook . highlight-indent-guides-mode)

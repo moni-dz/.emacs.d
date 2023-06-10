@@ -7,8 +7,8 @@ opinionated set of emacs lisp files
 
  * [[https://github.com/progfolio/elpaca][elpaca]] for package management
  * [[https://github.com/conao3/leaf.el][leaf]] for package configuration
- * [[https://github.com/minad/vertico][vertico]] for completion UI (ones you see for =M-x=, =C-h f=, =C-h v=, code completion, etc...)
- * [[https://github.com/joaotavora/eglot][eglot]] for the LSP client (it's built-in since Emacs 29)
+ * [[https://github.com/minad/vertico][vertico]] for completion UI (ones you see for =M-x=, =C-h f=, =C-h v=, etc...)
+ * [[https://github.com/manateelazycat/lsp-bridge][lsp-bridge]] for the LSP client (it's actually faster than everything else)
  * [[https://github.com/emacs-evil/evil][evil-mode]] for modal editing
  * embrace variable pitch for titles and headings
  * defer *everything* if possible (an exception was made for =no-littering= and =exec-path-from-shell=)
@@ -21,7 +21,7 @@ opinionated set of emacs lisp files
 
 I employ several magical hacks, tips and tricks, used by other Emacs users, in order for my =emacs-init-time=,  be under 1 second.
 
- * Avoid =set-face-attribute= when possible.
+ * Avoid =set-face-attribute= when possible
    - In the case where this isn't possible, hook these calls to =emacs-startup=.
 
  * Frame modifications must be done in =early-init.el=.
@@ -43,6 +43,6 @@ I employ several magical hacks, tips and tricks, used by other Emacs users, in o
 
 obligatory screenshot section
 
-[[assets/emacssplash.png]]
+[[assets/screenshot.png]]
 
-[[assets/emacsfull.png]]
+[[assets/busy.png]]

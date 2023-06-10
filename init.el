@@ -4,5 +4,8 @@
 (require 'interface)
 (require 'programming)
 (require 'keybindings)
-;;(require 'tools)
-;;(require 'vanity)
+;; (require 'tools)
+;; (require 'vanity)
+
+;; might or might not garbage collect
+(garbage-collect-maybe 4)

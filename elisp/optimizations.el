@@ -10,11 +10,6 @@
 ;; Ignore .Xresources
 (advice-add #'x-apply-session-resources :override #'ignore)
 
-;; Avoid any GC pauses at init.
-(setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.6
-      preferred-gc-threshold 16777216)
-
 (setq-default file-name-handler-alist nil
               create-lockfiles nil
               bidi-display-reordering nil
@@ -23,11 +18,16 @@
               frame-inhibit-implied-resize t
               inhibit-compacting-font-caches nil)
 
-;; and then reset it to 16MiB after with the file-name-handler-alist
+
+;; Avoid any GC pauses at init.
+(setq gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 0.6
+      preferred-gc-threshold 16000000)
+
+;; and then reset it to 16 MB after with the file-name-handler-alist
 (defun optimization/normalize ()
 	(setq-default gc-cons-threshold preferred-gc-threshold
-		            gc-cons-percentage 0.1)
-  (garbage-collect))
+		            gc-cons-percentage 0.1))
 
 (add-hook 'emacs-startup-hook #'optimization/normalize)
 
@@ -47,7 +47,7 @@
 ;; Use the Garbage Collector Magic Hack
 (elpaca-leaf gcmh
   :hook
-  ((emacs-startup-hook . gcmh-mode)
+  ((window-setup-hook . gcmh-mode)
    (focus-out-hook . gcmh-idle-garbage-collect))
   :custom
   (gcmh-verbose . nil)
@@ -55,6 +55,6 @@
   (gcmh-high-cons-threshold . 16777216))
 
 ;; Show only errors, not warnings
-(setq-default warning-minimum-level :error)
+(setq-default warning-minimum-level :warning)
 
 (provide 'optimizations)
