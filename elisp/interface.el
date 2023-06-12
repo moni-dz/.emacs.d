@@ -2,6 +2,7 @@
 
 (setq-default modus-themes-mixed-fonts t)
 
+;;;###autoload
 (defun interface/dynamic-theme ()
   "Load theme, depending on mode. (only for macOS)"
   (interactive)
@@ -17,22 +18,18 @@
 (elpaca-leaf doom-themes
   :after fontaine
   :init
-
   (if (eq system-type 'darwin)
       (progn
         (add-hook 'mac-effective-appearance-change-hook #'interface/dynamic-theme)
         (dolist (hook '(elpaca-after-init-hook elpaca-ui-mode-hook))
           (add-hook hook #'interface/dynamic-theme)))
     (dolist (hook '(elpaca-after-init-hook elpaca-ui-mode-hook))
-      (add-hook hook (lambda () (load-theme 'doom-monokai-pro t))))))
+      (add-hook hook #'(lambda () (load-theme 'doom-monokai-pro t))))))
 
 (elpaca-leaf (conceal :host github :repo "lepisma/conceal"))
 
 (elpaca-leaf (which-key :host github :repo "justbur/emacs-which-key")
   :hook (emacs-startup-hook . which-key-mode))
-
-(elpaca-leaf keycast)
-(elpaca-leaf (posframe :host github :repo "tumashu/posframe"))
 
 (elpaca-leaf solaire-mode
   :custom (solaire-mode-auto-swap-bg . nil)
@@ -44,34 +41,17 @@
 
 (elpaca-leaf doom-modeline
   :after blackout
-  :hook (window-setup-hook . doom-modeline-mode)
+  :hook ((elpaca-after-init-hook elpaca-ui-mode-hook window-setup-hook) . doom-modeline-mode)
   :custom
   (doom-modeline-hud . t)
-  (doom-modeline-height . 15)
+  (doom-modeline-height . 20)
+  (doom-modeline-bar-width . 0)
   (doom-modeline-icon . nil)
-  :config
-
-  (defun blackout-minor-modes ()
-    (blackout 'gcmh-mode)
-    (blackout 'visual-line-mode)
-    (blackout 'highlight-indent-guides-mode)
-    (blackout 'yas-minor-mode)
-    (blackout 'smartparens-mode)
-    (blackout 'eldoc-mode)
-    (blackout 'super-save-mode)
-    (blackout 'which-key-mode)
-    (blackout 'buffer-face-mode)
-    (blackout 'word-wrap-whitespace-mode)
-    (blackout 'page-break-lines-mode))
-
-  (dolist (hook '(window-setup-hook after-change-major-mode-hook))
-    (add-hook hook #'blackout-minor-modes))
   :custom-face
-  (doom-modeline . '((t (:family "Comic Neue" :height 1.1))))
-  (doom-modeline-bar . '((t (:family "Comic Neue" :height 1.1))))
-  (doom-modeline-bar-inactive . '((t (:family "Comic Neue" :height 1.1))))
-  (doom-modeline-buffer-path . '((t (:family "Comic Neue" :height 1.1))))
-  (doom-modeline-buffer-major-mode . '((t (:family "Comic Neue" :height 1.1)))))
+  (doom-modeline-evil-motion-state . '((t (:inherit (doom-modeline font-lock-doc-face) :family "Comic Code Ligatures"))))
+  (doom-modeline-buffer-file . '((t (:inherit (doom-modeline mode-line-buffer-id bold) :family "Comic Neue" :weight bold :height 1.3))))
+  (doom-modeline-buffer-modified . '((t (:inherit (doom-modeline warning bold) :family "Comic Neue" :weight bold :height 1.3))))
+  (doom-modeline-buffer-major-mode . '((t (:inherit (doom-modeline-emphasis bold) :family "Comic Neue" :weight bold :height 1.3)))))
 
 (elpaca-leaf (vertico :files (:defaults "extensions/*"))
   :config
@@ -100,17 +80,6 @@
 
 (leaf emacs
   :init
-  ;; Add prompt indicator to `completing-read-multiple'.
-  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
-  (defun crm-indicator (args)
-    (cons (format "[CRM%s] %s"
-                  (replace-regexp-in-string
-                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                   crm-separator)
-                  (car args))
-          (cdr args)))
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-
   ;; Do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
         '(read-only t cursor-intangible t face minibuffer-prompt))
@@ -128,7 +97,7 @@
   (("C-h f" . helpful-callable)
    ("C-h v" . helpful-variable)
    ("C-h k" . helpful-key))
-  :custom-face (helpful-heading . '((t (:inherit "Comic Neue")))))
+  :custom-face (helpful-heading . '((t (:family "Comic Neue")))))
 
 (elpaca-leaf (olivetti :host github :repo "rnkn/olivetti")
   :after fontaine
@@ -159,6 +128,7 @@
          (fontaine-set-preset 'medium)
          (display-line-numbers-mode -1))))
 
+;;;###autoload
 (defun interface/revert-zen-font-changes (&rest t)
   "Revert normal font size when swapping buffers."
   (if (bound-and-true-p olivetti-mode)
@@ -175,10 +145,12 @@
 
 (global-set-key (kbd "C-x z") #'interface/toggle-zen-mode)
 
+
 (elpaca-leaf page-break-lines :hook (window-setup-hook . global-page-break-lines-mode))
 
-(defconst interface/show-splash-image t "Whether to show the splash image or not.")
+(defconst interface/show-splash-image (display-graphic-p) "Whether to show the splash image or not.")
 
+;;;###autoload
 (defun interface/splash ()
   "Make a splash!"
 
@@ -190,8 +162,7 @@
         (setq-local cursor-type nil ; this doesn't get set wtf
                     vertical-scroll-bar nil
                     horizontal-scroll-bar nil
-                    header-line-format (concat (propertize " " 'display `((space :align-to (+ center (-0.5 . , (length header-line-text))))))
-                                               (propertize (concat " " header-line-text " ") 'face 'elpaca-busy)))
+                    header-line-format nil)
 
         (hide-mode-line-mode +1)
         (erase-buffer)
@@ -216,8 +187,10 @@
 			    (insert (propertize " " 'display `(space :align-to (+ center (-0.5 . ,(length startup-time-text))))))
           (insert (propertize startup-time-text 'face '(:inherit custom-saved :family "Comic Neue" :height 1.5)))))
       (switch-to-buffer buf)
-      (beginning-of-buffer))))
+      (beginning-of-buffer)
+      (setq-local buffer-read-only t))))
 
-(add-hook 'window-setup-hook #'interface/splash)
+(dolist (hook '(window-setup-hook elpaca-after-init-hook))
+  (add-hook hook #'interface/splash))
 
 (provide 'interface)

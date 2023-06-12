@@ -24,7 +24,8 @@
               ns-command-modifier 'meta
               make-backup-files nil)
 
-(add-hook 'emacs-startup-hook #'global-visual-line-mode)
+(add-hook 'window-setup-hook #'global-visual-line-mode)
+(add-hook 'window-setup-hook #'delete-selection-mode)
 
 (elpaca-leaf osx-trash
   :if (eq system-type 'darwin)
@@ -44,6 +45,9 @@
   :hook (prog-mode-hook . format-all-ensure-formatter))
 
 (add-hook 'prog-mode-hook #'show-paren-mode)
+
+(elpaca-leaf undo-tree
+  :hook (window-setup-hook . global-undo-tree-mode))
 
 (leaf hl-line
   :hook ((prog-mode-hook org-mode-hook text-mode-hook conf-mode-hook) . hl-line-mode))

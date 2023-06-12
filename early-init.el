@@ -1,3 +1,5 @@
+(setq gc-cons-threshold most-positive-fixnum)
+
 (tooltip-mode -1)
 
 ;; Early frame modifications
@@ -100,9 +102,9 @@ The expansion is a string indicating the package has been disabled."
 (elpaca-leaf exec-path-from-shell
   :leaf-defer nil
   :init
-  (exec-path-from-shell-initialize))
+  (add-hook 'window-setup-hook #'exec-path-from-shell-initialize))
 
 (elpaca-wait)
 
-(add-to-list 'load-path (concat user-emacs-directory "elisp"))
-(add-to-list 'load-path (concat user-emacs-directory "elisp/lang"))
+(add-to-list 'load-path "~/.config/emacs/elisp")
+(add-to-list 'load-path "~/.config/emacs/elisp/lang")

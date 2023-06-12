@@ -1,11 +1,11 @@
 (require 'optimizations)
 (require 'editor)
-(require 'fonts)
+(when (display-graphic-p) (require 'fonts))
 (require 'interface)
 (require 'programming)
 (require 'keybindings)
-;; (require 'tools)
+(require 'tools)
 ;; (require 'vanity)
 
-;; might or might not garbage collect
-(garbage-collect-maybe 4)
+;; garbage collect... maybe, maybe not...
+(garbage-collect-maybe 3)

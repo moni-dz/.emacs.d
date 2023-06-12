@@ -39,6 +39,12 @@
     "r" #'rust-run
     "f" #'rust-format-buffer
     "b" #'rust-compile
-    "s" #'string-inflection-ruby-style-cycle))
+    "s" #'string-inflection-ruby-style-cycle)
+
+  (local-leader 'normal zig-mode-map
+    "r" #'zig-run
+    "f" #'zig-format-buffer
+    "b" #'zig-compile
+    "t" #'zig-test-buffer))
 
 (provide 'keybindings)

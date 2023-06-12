@@ -24,19 +24,23 @@
   :config (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
   :custom (kind-icon-default-face . 'corfu-default))
 
-(elpaca-leaf tree-sitter :require t)
+(elpaca-leaf tree-sitter
+  :require t
+  :custom-face
+  (tree-sitter-hl-face:punctuation . '((t (:family "Comic Code Ligatures")))))
 
 (elpaca-leaf tree-sitter-langs
   :after tree-sitter
   :require t
-  :config (global-tree-sitter-mode))
+  :hook (window-setup-hook . global-tree-sitter-mode))
 
 (leaf emacs
   :config
   (setq completion-cycle-threshold 3
         tab-always-indent 'complete)
   :custom-face
-  (font-lock-comment-face . '((t (:inherit variable-pitch :height 1.2)))))
+  (font-lock-doc-face . '((t (:family "Comic Neue" :height 1.2))))
+  (font-lock-doc-markup-face . '((t (:family "Comic Neue" :height 1.2)))))
 
 (elpaca-leaf yasnippet
   :require t
@@ -57,6 +61,10 @@
               :files (:defaults "lsp_bridge.py" "acm/*" "core/*" "langserver/*" "multiserver/*" "resources/*"))
   :require t
   :hook (window-setup-hook . global-lsp-bridge-mode)
+  :custom
+  (lsp-bridge-enable-hover-diagnostic . t)
+  (lsp-bridge-signature-show-function . 'lsp-bridge-signature-show-with-frame)
+  (acm-enable-icon . t)  
   :custom-face
   (lsp-bridge-alive-mode-line . '((t (:inherit doom-modeline-lsp-running :family "Comic Neue" :height 1.2))))
   (lsp-bridge-kill-mode-line . '((t (:inherit doom-modeline-lsp-error :family "Comic Neue" :height 1.2)))))
@@ -65,10 +73,11 @@
 (elpaca-leaf string-inflection)
 
 (require 'elisp-lang)
-(require 'org-lang)
+(require 'markup-langs)
 (require 'zig-lang)
 (require 'r-lang)
 (require 'nix-lang)
 (require 'rust-lang)
+(require 'beam-langs)
 
 (provide 'programming)

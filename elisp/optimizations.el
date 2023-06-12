@@ -1,8 +1,16 @@
 ;;; -*- lexical-binding: t -*-
 
 ;; native compilation
-(setq comp-speed 3
-      comp-async-report-warnings-errors nil)
+(with-eval-after-load 'comp
+  (setq native-comp-async-jobs-number 8
+        native-comp-speed 3))
+
+;;;###autoload
+(defun optimizations/eagerly-native-comp-packages ()
+  (interactive)
+  (native-compile-async (concat user-emacs-directory "init.el"))
+  (native-compile-async (concat user-emacs-directory "early-init.el"))
+  (native-compile-async (concat user-emacs-directory "elpaca") 'recursively))
 
 ;; Temporarily save the file-name-handler-alist
 (defvar temp-file-name-handler-alist file-name-handler-alist)
@@ -18,18 +26,14 @@
               frame-inhibit-implied-resize t
               inhibit-compacting-font-caches nil)
 
+(setq preferred-gc-threshold 16000000)
 
-;; Avoid any GC pauses at init.
-(setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.6
-      preferred-gc-threshold 16000000)
-
-;; and then reset it to 16 MB after with the file-name-handler-alist
+;; reset it to 16 MB after with the file-name-handler-alist
 (defun optimization/normalize ()
 	(setq-default gc-cons-threshold preferred-gc-threshold
 		            gc-cons-percentage 0.1))
 
-(add-hook 'emacs-startup-hook #'optimization/normalize)
+(add-hook 'window-setup-hook #'optimization/normalize)
 
 (unless (or (daemonp) noninteractive)
   (let ((temp-file-name-handler-alist file-name-handler-alist))
@@ -52,9 +56,9 @@
   :custom
   (gcmh-verbose . nil)
   (gcmh-idle-delay . 6)
-  (gcmh-high-cons-threshold . 16777216))
+  (gcmh-high-cons-threshold . preferred-gc-threshold))
 
 ;; Show only errors, not warnings
-(setq-default warning-minimum-level :warning)
+(setq-default warning-minimum-level :error)
 
 (provide 'optimizations)
