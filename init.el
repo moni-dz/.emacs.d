@@ -8,4 +8,4 @@
 ;; (require 'vanity)
 
 ;; garbage collect... maybe, maybe not...
-(garbage-collect-maybe 3)
+(garbage-collect)

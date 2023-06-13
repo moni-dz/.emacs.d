@@ -1,5 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
+(elpaca-leaf zoxide)
+
 ;; dired
 (elpaca-leaf diredfl
   :hook (dired-mode-hook . diredfl-global-mode)
@@ -12,16 +14,6 @@
   :custom
   (magit-section-visibility-indicator . nil))
 
-;; Some tricks had to be done in order for this to work with `doom-modeline'
-(elpaca-leaf keycast
-  :config
-  (define-minor-mode keycast-mode
-    "Show current command and its keybinding in the modeline."
-    :global t
-    (if keycast-mode
-        (add-hook 'pre-command-hook 'keycast--update t)
-      (remove-hook 'pre-command-hook 'keycast--update)))
-
-  (add-to-list 'global-mode-string '("" mode-line-keycast)))
+(elpaca-leaf keycast)
 
 (provide 'tools)

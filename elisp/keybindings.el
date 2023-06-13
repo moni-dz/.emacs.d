@@ -10,7 +10,7 @@
 
   (leader '(normal visual)
     "o" #'find-file
-    "z" #'interface/toggle-zen-mode
+    "z" #'zen-mode
     "Z" #'focus-mode
     "k" #'kill-buffer-and-window
     "K" #'kill-other-buffers
@@ -26,6 +26,16 @@
     "h v" #'helpful-variable
     "h f" #'helpful-callable
     "h k" #'helpful-key)
+
+  (leader 'normal org-mode-map
+    "." #'org-present-next
+    "," #'org-present-prev)
+
+  (local-leader 'normal org-mode-map
+    "p" #'org-present
+    "P" #'org-present-quit
+    "." #'org-present-end
+    "," #'org-present-beginning)
 
   (local-leader 'normal lsp-bridge-mode-map
     "d" #'lsp-bridge-diagnostic-list)

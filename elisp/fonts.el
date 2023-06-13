@@ -9,9 +9,12 @@
 
 (elpaca-leaf fontaine
   :require t
-  :hook (modus-themes-after-load-theme-hook . fontaine-apply-current-preset)
+  :hook ((modus-themes-after-load-theme-hook after-init-hook) . fontaine-apply-current-preset)
   :config
   (fontaine-set-preset 'regular)
+  
+  (defun fonts/family-from-face (prop)
+    (plist-get (cdr (car (last fontaine-presets))) prop))
   :custom
   (fontaine-presets . '((tiny :default-height 90)
                         (small :default-height 110)

@@ -19,10 +19,8 @@
   :after fontaine
   :init
   (if (eq system-type 'darwin)
-      (progn
-        (add-hook 'mac-effective-appearance-change-hook #'interface/dynamic-theme)
-        (dolist (hook '(elpaca-after-init-hook elpaca-ui-mode-hook))
-          (add-hook hook #'interface/dynamic-theme)))
+      (dolist (hook '(mac-effective-appearance-change-hook elpaca-after-init-hook elpaca-ui-mode-hook))
+        (add-hook hook #'interface/dynamic-theme))
     (dolist (hook '(elpaca-after-init-hook elpaca-ui-mode-hook))
       (add-hook hook #'(lambda () (load-theme 'doom-monokai-pro t))))))
 
@@ -40,7 +38,7 @@
   (blackout 'emacs-lisp-mode "Emacs Lisp"))
 
 (elpaca-leaf doom-modeline
-  :after blackout
+  :after (fontaine blackout)
   :hook ((elpaca-after-init-hook elpaca-ui-mode-hook window-setup-hook) . doom-modeline-mode)
   :custom
   (doom-modeline-hud . t)
@@ -55,15 +53,16 @@
 
 (elpaca-leaf (vertico :files (:defaults "extensions/*"))
   :config
+  ;; style vertico's prompt
   (advice-add
-   #'vertico--format-candidate :around
-   (lambda (orig cand prefix suffix index _start)
-     (setq cand (funcall orig cand prefix suffix index _start))
-     (concat
-      (if (= vertico--index index)
-          (propertize "→ " 'face 'vertico-current)
-        "  ")
-      cand)))
+   #'vertico--format-candidate
+   :around #'(lambda (orig cand prefix suffix index _start)
+               (setq cand (funcall orig cand prefix suffix index _start))
+               (concat
+                (if (= vertico--index index)
+                    (propertize "→ " 'face 'vertico-current)
+                  "  ")
+                cand)))
 
   (vertico-mode)
   (vertico-reverse-mode))
@@ -113,38 +112,39 @@
   (display-line-numbers-width . 3)
   (display-line-numbers-widen . t))
 
-(defun interface/toggle-zen-mode ()
-  "Toggle a distraction-free environment for writing."
-  (interactive)
+;;;###autoload
+(define-minor-mode zen-mode
+  "A distraction-free environment for writing."
+  :global nil
 
-  (cond ((bound-and-true-p olivetti-mode)
-         (olivetti-mode -1)
-         (hide-mode-line-mode -1)
-         (fontaine-set-preset 'regular)
-         (display-line-numbers-mode +1))
-        (t
-         (olivetti-mode +1)
-         (hide-mode-line-mode +1)
-         (fontaine-set-preset 'medium)
-         (display-line-numbers-mode -1))))
+  (if zen-mode
+      (progn
+        (olivetti-mode +1)
+        (hide-mode-line-mode +1)
+        (fontaine-set-preset 'medium)
+        (display-line-numbers-mode -1))
+    (progn
+      (olivetti-mode -1)
+      (hide-mode-line-mode -1)
+      (fontaine-set-preset 'regular)
+      (display-line-numbers-mode +1))))
 
 ;;;###autoload
-(defun interface/revert-zen-font-changes (&rest t)
+(defun zen--revert-font-changes (&rest t)
   "Revert normal font size when swapping buffers."
-  (if (bound-and-true-p olivetti-mode)
+  (if (bound-and-true-p zen-mode)
       (fontaine-set-preset 'medium)
     (fontaine-set-preset 'regular)))
 
 (add-hook
  'window-setup-hook
- (lambda ()
-   (add-hook 'find-file-hook #'interface/revert-zen-font-changes)
+ #'(lambda ()
+     (add-hook 'find-file-hook #'zen--revert-font-changes)
 
-   (dolist (fun '(switch-to-buffer previous-buffer next-buffer))
-     (advice-add fun :after #'interface/revert-zen-font-changes))))
+     (dolist (fun '(switch-to-buffer previous-buffer next-buffer))
+       (advice-add fun :after #'zen--revert-font-changes))))
 
-(global-set-key (kbd "C-x z") #'interface/toggle-zen-mode)
-
+(global-set-key (kbd "C-x z") #'zen-mode)
 
 (elpaca-leaf page-break-lines :hook (window-setup-hook . global-page-break-lines-mode))
 
